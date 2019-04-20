@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Card, Dropdown, Icon, Menu, message, Modal, Switch, Table, Tag} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import App from '../../common/App.jsx';
-import {CTYPE, U, Utils} from "../../common";
+import {CTYPE, Utils} from "../../common";
 
 const minY = new Date().getFullYear();
 
@@ -41,7 +41,7 @@ export default class Terms extends React.Component {
 
     setDefault = (id) => {
         Modal.confirm({
-            title: `确认启用?`,
+            title: `确认设为默认?`,
             onOk: () => {
                 App.api('adm/term/set_term_default', {id}).then(() => {
                     message.success('操作成功');
@@ -111,7 +111,7 @@ export default class Terms extends React.Component {
                         className: 'txt-center',
                         render: (obj, term, index) => {
                             let {asStr, setDefault} = term;
-                            return <span>{setDefault === 1 && <Tag color="red">启用中</Tag>}{asStr}</span>;
+                            return <span>{setDefault === 1 && <Tag color="red">默认学期</Tag>}{asStr}</span>;
                         }
                     }, {
                         title: '学年',
@@ -122,7 +122,7 @@ export default class Terms extends React.Component {
                         title: '学期',
                         dataIndex: 'termIndex',
                         className: 'txt-center',
-                        width: '80px',
+                        width: '120px',
                         render: (termIndex) => {
                             return `第${termIndex}学期`
                         }
@@ -150,7 +150,7 @@ export default class Terms extends React.Component {
                                     <a onClick={() => this.edit(term)}>编辑</a>
                                 </Menu.Item>}
                                 {setDefault === 0 && <Menu.Item key="3">
-                                    <a onClick={() => this.setDefault(id)}>启用</a>
+                                    <a onClick={() => this.setDefault(id)}>设为默认</a>
                                 </Menu.Item>}
                             </Menu>} trigger={['click']}>
                                 <a className="ant-dropdown-link">

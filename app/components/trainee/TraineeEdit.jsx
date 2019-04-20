@@ -1,6 +1,6 @@
 import React from 'react'
 import App from '../../common/App.jsx'
-import {Button, Card, DatePicker, Form, Input, message, Radio} from 'antd';
+import {Button, Card, DatePicker, Form, Input, message, Radio, Select} from 'antd';
 import {CTYPE, OSSWrap, U} from "../../common";
 import {Link} from 'react-router-dom';
 import BreadcrumbCustom from '../BreadcrumbCustom';
@@ -13,6 +13,7 @@ moment.locale('zh-cn');
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 class TraineeEdit extends React.Component {
 
@@ -20,7 +21,10 @@ class TraineeEdit extends React.Component {
         super(props);
         this.state = {
             id: parseInt(this.props.match.params.id),
-            trainee: {}
+            trainee: {},
+
+            terms: []
+
         };
     }
 
@@ -34,10 +38,17 @@ class TraineeEdit extends React.Component {
         } else {
             this.setForm({});
         }
+        this.loadProps();
     }
 
+    loadProps = () => {
+        App.api('adm/term/terms').then((terms) => {
+            this.setState({terms});
+        });
+    };
+
     setForm = (trainee) => {
-        let {educationType = 1, username, name, studentNum, gender = 1, idnumber, mobile, email, address, inSchool = 1} = trainee;
+        let {educationType = 1, username, name, studentNum, gender = 1, idnumber, mobile, email, address, inSchool = 1, term} = trainee;
         this.props.form.setFieldsValue({
             educationType,
             username,
@@ -48,7 +59,8 @@ class TraineeEdit extends React.Component {
             mobile,
             email,
             address,
-            inSchool
+            inSchool,
+            term
         });
     };
 
@@ -97,7 +109,7 @@ class TraineeEdit extends React.Component {
                     return;
                 }
 
-                let {educationType, username, name, studentNum, gender = 1, idnumber, mobile, email, address, inSchool = 1, password} = values;
+                let {educationType, username, name, studentNum, gender = 1, idnumber, mobile, email, address, inSchool = 1, term, password} = values;
 
                 if (U.str.isNotEmpty(email) && !U.str.isEmail(email)) {
                     message.warn('邮箱地址不正确');
@@ -121,6 +133,7 @@ class TraineeEdit extends React.Component {
                         email,
                         address,
                         inSchool,
+                        term,
                         password
                     })
                 }).then(() => {
@@ -133,7 +146,7 @@ class TraineeEdit extends React.Component {
 
     render() {
 
-        let {id, trainee = {}} = this.state;
+        let {id, trainee = {}, terms = []} = this.state;
 
         const {getFieldDecorator} = this.props.form;
 
@@ -241,6 +254,19 @@ class TraineeEdit extends React.Component {
                             })
                         }}/>
                 </FormItem>
+
+                <FormItem
+                    {...CTYPE.formItemLayout}
+                    label="学期">
+                    {getFieldDecorator('term')(
+                        <Select style={{width: '200px'}}>
+                            {terms.map((t, i) => {
+                                return <Option key={t.id} value={t.sequence}>{t.asStr}</Option>
+                            })}
+                        </Select>
+                    )}
+                </FormItem>
+
 
                 <FormItem
                     {...CTYPE.formItemLayout}

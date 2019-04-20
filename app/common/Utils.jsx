@@ -2,12 +2,13 @@ import NProgress from 'nprogress';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DialogQRCode from "../components/common/DialogQRCode";
-import {CTYPE, KvStorage} from "./index";
+import {App, CTYPE, KvStorage} from "./index";
 import ImgLightbox from "./ImgLightbox";
 import ImgEditor from "./ImgEditor";
 
-import {LocaleProvider} from 'antd';
+import {Alert, LocaleProvider, Modal} from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
+import DialogExport from "./DialogExport";
 
 let Utils = (function () {
 
@@ -200,9 +201,53 @@ let Utils = (function () {
 
     })();
 
+    let exportExcel = (() => {
+
+        let apis = {
+            trainees: ['adm/trainee/export_trainees', 'adm/trainee/export_trainees_progress']
+        };
+
+        let doExport = (flag, query) => {
+            let queryStr = '<p><b>导出条件：</b></p>';
+            let withQuery = false;
+            let param = {};
+            if (flag === 'trainees') {
+                if (query.status) {
+                    queryStr += `<p>状态：${query.status === 1 ? '在校' : '毕业'}</p>`;
+                    withQuery = true;
+                }
+                if (query.term !== '0') {
+                    queryStr += `<p>学期：${query.term}</p>`;
+                    withQuery = true;
+                }
+                param = {traineeQo: JSON.stringify({query})};
+            }
+            console.log(queryStr);
+            console.log(param);
+            Modal.confirm({
+                title: '确认导出？',
+                content: withQuery ? <div dangerouslySetInnerHTML={{__html: queryStr}}/> :
+                    <Alert message="未选择导出条件，此操作会耗费较长时间" type="warning"/>,
+                onOk() {
+                    let api = apis[flag];
+                    App.api(api[0], param).then((result) => {
+                        common.renderReactDOM(<DialogExport task={result} api_query={api[1]}/>);
+                    });
+                },
+                onCancel() {
+                },
+            });
+
+
+        };
+
+        return {doExport}
+
+    })();
 
     return {
         common, adm, num, pager, nProgress, qrcode, adminPermissions,
+        exportExcel,
         _setCurrentPage, _getCurrentPage, _setTabIndex, _getTabIndex
     };
 

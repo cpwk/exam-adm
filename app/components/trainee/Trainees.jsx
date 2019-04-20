@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card, Col, Dropdown, Icon, Input, Menu, message, Modal, Row, Select, Table} from 'antd';
+import {Button, Card, Col, Dropdown, Icon, Input, Menu, message, Modal, Row, Select, Table, Tooltip} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import App from '../../common/App.jsx';
 import {CTYPE, U} from "../../common";
@@ -14,6 +14,9 @@ export default class Trainees extends React.Component {
         super(props);
         this.state = {
 
+            terms: [],
+
+            term: '0',
             status: 0,
             key: 'name',
             q: '',
@@ -30,10 +33,17 @@ export default class Trainees extends React.Component {
 
     componentDidMount() {
         this.loadData();
+        this.loadProps();
     }
 
+    loadProps = () => {
+        App.api('adm/term/terms').then((terms) => {
+            this.setState({terms});
+        });
+    };
+
     getQuery = () => {
-        let {status, search, q, key} = this.state;
+        let {term, status, search, q, key} = this.state;
 
         let query = {};
         if (search === true) {
@@ -47,6 +57,7 @@ export default class Trainees extends React.Component {
                 }
             }
         }
+        query.term = term;
         query.status = status;
         return query;
     };
@@ -67,6 +78,7 @@ export default class Trainees extends React.Component {
                 list: content, pagination,
                 loading: false
             });
+            TraineeUtils.setCurrentPage(pagination.current);
         });
     };
 
@@ -97,9 +109,13 @@ export default class Trainees extends React.Component {
         });
     };
 
+    doExport = () => {
+        Utils.exportExcel.doExport('trainees', this.getQuery());
+    };
+
     render() {
 
-        let {list = [], pagination = {}, loading, q} = this.state;
+        let {terms = [], list = [], pagination = {}, loading, q} = this.state;
 
         return <div className="common-list">
 
@@ -111,12 +127,24 @@ export default class Trainees extends React.Component {
                         <Button type="primary" icon="user-add" onClick={() => {
                             this.edit({id: 0})
                         }}>添加学员</Button>
+                        <Button type='primary' onClick={this.doExport}>导出</Button>
+                        &nbsp;&nbsp;<Tooltip
+                        title="选择学期后可以导出该学期学员"><Icon type='question-circle'/></Tooltip>
                     </Col>
                     <Col span={12} style={{textAlign: 'right'}}>
-                        <Select rowKey={(record, index) => index} onSelect={(status) => {
+                        <Select onSelect={(term) => {
+                            this.setState({term});
+                        }} defaultValue={0} style={{width: 150}}>
+                            <Option value={0}>全部学期</Option>
+                            {terms.map((t, i) => {
+                                return <Option key={i} value={t.sequence}>{t.asStr}</Option>
+                            })}
+                        </Select>
+                        &nbsp;
+                        <Select onSelect={(status) => {
                             this.setState({status});
                         }} defaultValue={0} style={{width: 100}}>
-                            <Option value={0}>全部</Option>
+                            <Option value={0}>全部状态</Option>
                             <Option value={1}>在校</Option>
                             <Option value={2}>毕业</Option>
                         </Select>
@@ -164,6 +192,10 @@ export default class Trainees extends React.Component {
                     }, {
                         title: '手机号',
                         dataIndex: 'mobile',
+                        className: 'txt-center'
+                    }, {
+                        title: '学期',
+                        dataIndex: 'term',
                         className: 'txt-center'
                     }, {
                         title: '入校日期',
