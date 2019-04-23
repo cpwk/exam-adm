@@ -109,6 +109,65 @@ let Utils = (function () {
         }
     })();
 
+    let addr = (() => {
+
+        let regions = [];
+
+        let loadRegion = (component) => {
+            if (regions && regions.length > 0) {
+                component.setState({
+                    regions: regions
+                });
+            } else {
+                fetch(CTYPE.REGION_PATH).then(res => {
+                    res.json().then((_regions) => {
+                        regions = _regions;
+                        component.setState({
+                            regions: _regions
+                        });
+                    });
+                });
+            }
+        };
+
+        let getCodes = (code) => {
+            let codes = [3];
+            if (code && code.length === 6) {
+                codes[0] = code.substr(0, 2);
+                codes[1] = code.substr(0, 4);
+                codes[2] = code;
+            }
+            return codes;
+        };
+
+        let getPCD = (code) => {
+            if (!regions || regions.length === 0 || !code || code === '') {
+                return null;
+            }
+            let codes = getCodes(code);
+            let pcd = '';
+            regions.map((r1, index1) => {
+                if (r1.value === codes[0]) {
+                    pcd = r1.label;
+                    r1.children.map((r2, index2) => {
+                        if (r2.value === codes[1]) {
+                            pcd += ' ' + r2.label;
+                            r2.children.map((r3, index3) => {
+                                if (r3.value === code) {
+                                    pcd += ' ' + r3.label;
+                                }
+                            })
+                        }
+                    })
+                }
+            });
+            return pcd;
+        };
+
+        return {loadRegion, getPCD, getCodes}
+
+    })();
+
     let adminPermissions = null;
 
     let adm = (() => {
@@ -143,6 +202,10 @@ let Utils = (function () {
                 TERM_EDIT: authPermission('TERM_EDIT'),
                 TRAINER_EDIT: authPermission('TRAINER_EDIT'),
                 TRAINEE_EDIT: authPermission('TRAINEE_EDIT'),
+
+                BANNER_EDIT: authPermission('BANNER_EDIT'),
+                ARTICLE_EDIT: authPermission('ARTICLE_EDIT'),
+                QA_EDIT: authPermission('QA_EDIT')
 
 
             }
@@ -247,7 +310,7 @@ let Utils = (function () {
 
     return {
         common, adm, num, pager, nProgress, qrcode, adminPermissions,
-        exportExcel,
+        exportExcel, addr,
         _setCurrentPage, _getCurrentPage, _setTabIndex, _getTabIndex
     };
 

@@ -73,9 +73,15 @@ class SiderCustom extends Component {
 
     render() {
 
-        let {ADMIN_LIST, ROLE_EDIT, TERM_EDIT, TRAINER_EDIT, TRAINEE_EDIT} = Utils.adminPermissions;
+        let {
+            ADMIN_LIST, ROLE_EDIT, TERM_EDIT, TRAINER_EDIT, TRAINEE_EDIT,
+            BANNER_EDIT, ARTICLE_EDIT, QA_EDIT
+        } = Utils.adminPermissions;
 
         let withSetting = TERM_EDIT;
+
+        let withWS = BANNER_EDIT || ARTICLE_EDIT || QA_EDIT;
+
 
         let {firstHide, selectedKey, openKey} = this.state;
 
@@ -117,6 +123,16 @@ class SiderCustom extends Component {
                                                  className="nav-text">基础配置</span></span>}>
                         {TERM_EDIT && <Menu.Item key={CTYPE.link.terms.key}><Link
                             to={CTYPE.link.terms.path}>{CTYPE.link.terms.txt}</Link></Menu.Item>}
+                    </SubMenu>}
+
+                    {withWS && <SubMenu key='/app/ws'
+                                        title={<span><Icon type="copy"/><span className="nav-text">网站管理</span></span>}>
+                        {BANNER_EDIT && <Menu.Item key={CTYPE.link.info_banners.key}><Link
+                            to={CTYPE.link.info_banners.path}>{CTYPE.link.info_banners.txt}</Link></Menu.Item>}
+                        {ARTICLE_EDIT && <Menu.Item key={CTYPE.link.info_articles.key}><Link
+                            to={CTYPE.link.info_articles.path}>{CTYPE.link.info_articles.txt}</Link></Menu.Item>}
+                        {QA_EDIT && <Menu.Item key={CTYPE.link.info_qa_templates.key}><Link
+                            to={CTYPE.link.info_qa_templates.path}>{CTYPE.link.info_qa_templates.txt}</Link></Menu.Item>}
                     </SubMenu>}
 
                     {ADMIN_LIST && <SubMenu key='/app/admin'

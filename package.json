@@ -29,7 +29,7 @@
     "react-cookie": "^1.0.4",
     "react-dom": "^16.6.3",
     "react-draggable": "^2.2.6",
-    "react-froala-wysiwyg": "^2.8.1",
+    "react-froala-wysiwyg": "2.9.5-1",
     "react-image-lightbox": "^4.6.0",
     "react-resizable": "^1.7.5",
     "react-router-dom": "^4.3.1",

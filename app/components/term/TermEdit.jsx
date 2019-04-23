@@ -1,12 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Button, Card, Form, InputNumber, message, Radio} from 'antd';
+import {Button, Card, Form, InputNumber, message} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import App from '../../common/App.jsx';
 import {CTYPE, U} from "../../common";
 
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 
 const minY = new Date().getFullYear();
 
@@ -15,14 +14,14 @@ export default class TermEdit extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: this.props.match.params.id,
+            id: parseInt(this.props.match.params.id),
             term: {year: minY, termIndex: 1},
         }
     }
 
     componentDidMount() {
         let {id} = this.state;
-        if (id != 0) {
+        if (id !== 0) {
             App.api('adm/term/term', {id}).then((term) => {
                 this.setState({
                     term

@@ -18,6 +18,13 @@ import TrainerEdit from './components/trainer/TrainerEdit';
 
 import Trainees from './components/trainee/Trainees';
 import TraineeEdit from './components/trainee/TraineeEdit';
+/* website */
+import Banners from './components/banner/Banners'
+import Articles from './components/article/Articles'
+import ArticleEdit from './components/article/ArticleEdit'
+import QATemplates from './components/qa/QATemplates'
+import QATemplateEdit from './components/qa/QATemplateEdit'
+import QAPapers from './components/qa/QAPapers'
 
 const routes = (
     <HashRouter>
@@ -50,6 +57,13 @@ const routes = (
                                 <Route path={'/app/admin/admin-edit/:id'} component={AdminEdit}/>
                                 <Route path={'/app/admin/roles'} component={Roles}/>
                                 <Route path={'/app/admin/role-edit/:id'} component={RoleEdit}/>
+
+                                <Route path={'/app/ws/banners'} component={Banners}/>
+                                <Route path={'/app/ws/articles'} component={Articles}/>
+                                <Route path={'/app/ws/article-edit/:id'} component={ArticleEdit}/>
+                                <Route path={'/app/ws/qa-templates'} component={QATemplates}/>
+                                <Route path={'/app/ws/qa-template-edit/:id'} component={QATemplateEdit}/>
+                                <Route path={'/app/ws/qa-papers/:id'} component={QAPapers}/>
 
                             </Index>
                         )}/>

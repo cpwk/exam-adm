@@ -1,12 +1,12 @@
 import React from 'react';
-import {Button, Card, Dropdown, Icon, Menu, message, Modal, Switch, Table, Tag} from 'antd';
+import {Button, Card, Dropdown, Icon, Menu, message, Modal, Switch, Table} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import App from '../../common/App.jsx';
 import {CTYPE, Utils} from "../../common";
 
 const minY = new Date().getFullYear();
 
-export default class Terms extends React.Component {
+export default class QATemplates extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,11 +21,12 @@ export default class Terms extends React.Component {
         this.loadData();
     }
 
+
     loadData = () => {
         this.setState({loading: true});
         let p = this.state.pagination;
         Utils.nProgress.start();
-        App.api('adm/term/terms').then((list) => {
+        App.api('adm/qa/qaTemplates').then((list) => {
             this.setState({
                 list, loading: false
             });
@@ -34,32 +35,18 @@ export default class Terms extends React.Component {
     };
 
     edit = group => {
-        App.go(`/app/setting/term-edit/${group.id}`)
+        App.go(`/app/ws/qa-template-edit/${group.id}`)
     };
 
-    setDefault = (id) => {
-        Modal.confirm({
-            title: `确认设为默认?`,
-            onOk: () => {
-                App.api('adm/term/set_term_default', {id}).then(() => {
-                    message.success('操作成功');
-                    this.loadData();
-                })
-            },
-            onCancel() {
-            },
-        });
-    };
-
-    modEnabled = (term, index, chk) => {
+    modEnabled = (qaTemplate, index, chk) => {
         let _this = this;
-        let opt = chk ? '启用' : '禁用';
+        let opt = chk ? '上架' : '下架';
         Modal.confirm({
             title: `确认${opt}?`,
             onOk() {
                 let status = chk ? 1 : 2;
-                App.api('adm/term/update_status', {
-                    id: term.id, status
+                App.api('adm/qa/status_qaTemplate', {
+                    id: qaTemplate.id, status
                 }).then(() => {
                     message.success('已' + opt);
                     let {list = []} = _this.state;
@@ -70,18 +57,13 @@ export default class Terms extends React.Component {
         });
     };
 
-    editable = (term) => {
-        let {year, setDefault} = term;
-        return year > minY && setDefault === 0;
-    };
-
     render() {
 
         let {list = [], loading} = this.state;
 
         return <div className="common-list">
 
-            <BreadcrumbCustom first={CTYPE.link.terms.txt}/>
+            <BreadcrumbCustom first={CTYPE.link.info_qa_templates.txt}/>
 
             <Card>
 
@@ -99,39 +81,27 @@ export default class Terms extends React.Component {
                         width: '60px',
                         render: (col, row, i) => i + 1
                     }, {
-                        title: '识别码',
-                        dataIndex: 'sequence',
-                        className: 'txt-center',
-                        width: '140px',
-                    }, {
                         title: '名称',
-                        dataIndex: 'name',
+                        dataIndex: 'title',
+                        className: 'txt-center'
+                    }, {
+                        title: '简介',
+                        dataIndex: 'descr',
+                        className: 'txt-center'
+                    }, {
+                        title: '条目数',
+                        dataIndex: 'items',
                         className: 'txt-center',
-                        render: (obj, term, index) => {
-                            let {asStr, setDefault} = term;
-                            return <span>{setDefault === 1 && <Tag color="red">默认学期</Tag>}{asStr}</span>;
+                        render: (items) => {
+                            return items.length;
                         }
                     }, {
-                        title: '学年',
-                        dataIndex: 'year',
-                        className: 'txt-center',
-                        width: '120px'
-                    }, {
-                        title: '学期',
-                        dataIndex: 'termIndex',
-                        className: 'txt-center',
-                        width: '120px',
-                        render: (termIndex) => {
-                            return `第${termIndex}学期`
-                        }
-                    }, {
-                        title: '启用',
+                        title: '上下架',
                         dataIndex: 'status',
                         className: 'txt-center',
                         width: '80px',
                         render: (status, item, index) => {
-                            let editable = this.editable(item);
-                            return <Switch disabled={!editable} checked={status === 1} onChange={(chk) => {
+                            return <Switch checked={status === 1} onChange={(chk) => {
                                 this.modEnabled(item, index, chk);
                             }}/>
                         }
@@ -140,16 +110,14 @@ export default class Terms extends React.Component {
                         dataIndex: 'opt',
                         className: 'txt-center',
                         width: '80px',
-                        render: (obj, term, index) => {
-                            let {id, setDefault} = term;
-                            let editable = this.editable(term);
+                        render: (obj, qaTemplate, index) => {
                             return <Dropdown overlay={<Menu>
-                                {editable && <Menu.Item key="1">
-                                    <a onClick={() => this.edit(term)}>编辑</a>
-                                </Menu.Item>}
-                                {setDefault === 0 && <Menu.Item key="3">
-                                    <a onClick={() => this.setDefault(id)}>设为默认</a>
-                                </Menu.Item>}
+                                <Menu.Item key="1">
+                                    <a onClick={() => this.edit(qaTemplate)}>编辑</a>
+                                </Menu.Item>
+                                <Menu.Item key="2">
+                                    <a>反馈列表</a>
+                                </Menu.Item>
                             </Menu>} trigger={['click']}>
                                 <a className="ant-dropdown-link">
                                     操作 <Icon type="down"/>
