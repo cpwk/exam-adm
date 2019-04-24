@@ -141,6 +141,7 @@ let Utils = (function () {
         };
 
         let getPCD = (code) => {
+            console.log(code);
             if (!regions || regions.length === 0 || !code || code === '') {
                 return null;
             }
@@ -161,6 +162,7 @@ let Utils = (function () {
                     })
                 }
             });
+            console.log(pcd);
             return pcd;
         };
 
@@ -267,7 +269,9 @@ let Utils = (function () {
     let exportExcel = (() => {
 
         let apis = {
-            trainees: ['adm/trainee/export_trainees', 'adm/trainee/export_trainees_progress']
+            trainees: ['adm/trainee/export_trainees', 'adm/trainee/export_trainees_progress'],
+            qas: ['adm/qa/export_qaPapers', 'adm/qa/export_qaPapers_progress']
+
         };
 
         let doExport = (flag, query) => {
@@ -283,7 +287,13 @@ let Utils = (function () {
                     queryStr += `<p>学期：${query.term}</p>`;
                     withQuery = true;
                 }
-                param = {traineeQo: JSON.stringify({query})};
+                param = {traineeQo: JSON.stringify({...query})};
+            } else if (flag === 'qas') {
+                if (query.status) {
+                    queryStr += `<p>状态：${query.status === 0 ? '全部' : (query.status === 1 ? '未处理' : (query.status === 2 ? '已处理' : '废弃'))}</p>`;
+                    withQuery = true;
+                }
+                param = {qaPaperQo: JSON.stringify({...query})};
             }
             console.log(queryStr);
             console.log(param);
@@ -300,8 +310,6 @@ let Utils = (function () {
                 onCancel() {
                 },
             });
-
-
         };
 
         return {doExport}

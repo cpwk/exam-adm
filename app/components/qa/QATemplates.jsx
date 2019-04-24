@@ -116,7 +116,7 @@ export default class QATemplates extends React.Component {
                                     <a onClick={() => this.edit(qaTemplate)}>编辑</a>
                                 </Menu.Item>
                                 <Menu.Item key="2">
-                                    <a>反馈列表</a>
+                                    <a onClick={() => App.go(`/app/ws/qa-papers/${qaTemplate.id}`)}>反馈列表</a>
                                 </Menu.Item>
                             </Menu>} trigger={['click']}>
                                 <a className="ant-dropdown-link">
