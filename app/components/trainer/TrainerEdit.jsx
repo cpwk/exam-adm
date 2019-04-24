@@ -132,7 +132,7 @@ class TrainerEdit extends React.Component {
 
         let {img} = trainer;
 
-        let style_img = {width: '150px', height: '210px'};
+        let style_img = {width: '145px', height: '190px'};
 
         return <div className="common-edit-page">
 
@@ -160,7 +160,7 @@ class TrainerEdit extends React.Component {
                                        onChange={(e) => this.handleNewImage(e)}/>
                                 选择图片</Button>
                             <br/>
-                            建议上传图片尺寸<span>500*700</span>，.jpg、.png格式，文件小于1M
+                            建议上传图片尺寸<span>580*760</span>，.jpg、.png格式，文件小于1M
                         </div>
                     </div>
                 </FormItem>

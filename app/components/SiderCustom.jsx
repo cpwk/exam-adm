@@ -75,12 +75,12 @@ class SiderCustom extends Component {
 
         let {
             ADMIN_LIST, ROLE_EDIT, TERM_EDIT, TRAINER_EDIT, TRAINEE_EDIT,
-            BANNER_EDIT, ARTICLE_EDIT, QA_EDIT
+            BANNER_EDIT, PARTNER_EDIT, ARTICLE_EDIT, QA_EDIT
         } = Utils.adminPermissions;
 
         let withSetting = TERM_EDIT;
 
-        let withWS = BANNER_EDIT || ARTICLE_EDIT || QA_EDIT;
+        let withWS = BANNER_EDIT || PARTNER_EDIT || ARTICLE_EDIT || QA_EDIT;
 
 
         let {firstHide, selectedKey, openKey} = this.state;
@@ -127,12 +127,14 @@ class SiderCustom extends Component {
 
                     {withWS && <SubMenu key='/app/ws'
                                         title={<span><Icon type="copy"/><span className="nav-text">网站管理</span></span>}>
-                        {BANNER_EDIT && <Menu.Item key={CTYPE.link.info_banners.key}><Link
-                            to={CTYPE.link.info_banners.path}>{CTYPE.link.info_banners.txt}</Link></Menu.Item>}
-                        {ARTICLE_EDIT && <Menu.Item key={CTYPE.link.info_articles.key}><Link
-                            to={CTYPE.link.info_articles.path}>{CTYPE.link.info_articles.txt}</Link></Menu.Item>}
-                        {QA_EDIT && <Menu.Item key={CTYPE.link.info_qa_templates.key}><Link
-                            to={CTYPE.link.info_qa_templates.path}>{CTYPE.link.info_qa_templates.txt}</Link></Menu.Item>}
+                        {BANNER_EDIT && <Menu.Item key={CTYPE.link.ws_banners.key}><Link
+                            to={CTYPE.link.ws_banners.path}>{CTYPE.link.ws_banners.txt}</Link></Menu.Item>}
+                        {PARTNER_EDIT && <Menu.Item key={CTYPE.link.ws_partners.key}><Link
+                            to={CTYPE.link.ws_partners.path}>{CTYPE.link.ws_partners.txt}</Link></Menu.Item>}
+                        {ARTICLE_EDIT && <Menu.Item key={CTYPE.link.ws_articles.key}><Link
+                            to={CTYPE.link.ws_articles.path}>{CTYPE.link.ws_articles.txt}</Link></Menu.Item>}
+                        {QA_EDIT && <Menu.Item key={CTYPE.link.ws_qa_templates.key}><Link
+                            to={CTYPE.link.ws_qa_templates.path}>{CTYPE.link.ws_qa_templates.txt}</Link></Menu.Item>}
                     </SubMenu>}
 
                     {ADMIN_LIST && <SubMenu key='/app/admin'

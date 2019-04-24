@@ -82,7 +82,7 @@ export default class Banners extends React.Component {
 
         return <div className="common-list">
 
-            <BreadcrumbCustom first={CTYPE.link.info_banners.txt}/>
+            <BreadcrumbCustom first={CTYPE.link.ws_banners.txt}/>
 
             <Card bordered={false}>
 

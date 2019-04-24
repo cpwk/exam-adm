@@ -134,7 +134,7 @@ export default class QAPapers extends React.Component {
 
         return <div className="common-list">
 
-            <BreadcrumbCustom first={CTYPE.link.info_qa_templates.txt}/>
+            <BreadcrumbCustom first={CTYPE.link.ws_qa_templates.txt}/>
 
             <Card>
 

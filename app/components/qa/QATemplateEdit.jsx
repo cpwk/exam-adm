@@ -308,7 +308,7 @@ class QATemplateEditForm extends React.Component {
         return <div className="qa-page-ui-page">
 
             <BreadcrumbCustom
-                first={<Link to={CTYPE.link.info_qa_templates.path}>{CTYPE.link.info_qa_templates.txt}</Link>}
+                first={<Link to={CTYPE.link.ws_qa_templates.path}>{CTYPE.link.ws_qa_templates.txt}</Link>}
                 second='编辑问卷'/>
 
             <Card bordered={false}>

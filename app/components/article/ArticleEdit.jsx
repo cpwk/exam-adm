@@ -111,7 +111,7 @@ class ArticleEditForm extends React.Component {
 
             <Form onSubmit={this.handleSubmit}>
                 <Card title={<BreadcrumbCustom
-                    first={<Link to={CTYPE.link.info_articles.path}>{CTYPE.link.info_articles.txt}</Link>}
+                    first={<Link to={CTYPE.link.ws_articles.path}>{CTYPE.link.ws_articles.txt}</Link>}
                     second={id > 0 ? '编辑动态' : '新建动态'}/>} bordered={false}
                       extra={<Button type="primary" htmlType="submit">{id > 0 ? '保存' : '发布'}</Button>}
                       style={CTYPE.formStyle}>

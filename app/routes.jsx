@@ -20,6 +20,7 @@ import Trainees from './components/trainee/Trainees';
 import TraineeEdit from './components/trainee/TraineeEdit';
 /* website */
 import Banners from './components/banner/Banners'
+import Partners from './components/partner/Partners'
 import Articles from './components/article/Articles'
 import ArticleEdit from './components/article/ArticleEdit'
 import QATemplates from './components/qa/QATemplates'
@@ -59,6 +60,7 @@ const routes = (
                                 <Route path={'/app/admin/role-edit/:id'} component={RoleEdit}/>
 
                                 <Route path={'/app/ws/banners'} component={Banners}/>
+                                <Route path={'/app/ws/partners'} component={Partners}/>
                                 <Route path={'/app/ws/articles'} component={Articles}/>
                                 <Route path={'/app/ws/article-edit/:id'} component={ArticleEdit}/>
                                 <Route path={'/app/ws/qa-templates'} component={QATemplates}/>

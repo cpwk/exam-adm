@@ -206,6 +206,7 @@ let Utils = (function () {
                 TRAINEE_EDIT: authPermission('TRAINEE_EDIT'),
 
                 BANNER_EDIT: authPermission('BANNER_EDIT'),
+                PARTNER_EDIT: authPermission('PARTNER_EDIT'),
                 ARTICLE_EDIT: authPermission('ARTICLE_EDIT'),
                 QA_EDIT: authPermission('QA_EDIT')
 
