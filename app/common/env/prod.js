@@ -1,4 +1,4 @@
 const env = {
-    api: '//api.maidaotech.cn/'
+    api: '//api.edu.maidaotech.cn/'
 };
 export default env;

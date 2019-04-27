@@ -61,7 +61,7 @@ let CTYPE = (() => {
             ws_banners: {key: '/app/ws/banners', path: '/app/ws/banners', txt: 'Banner'},
             ws_partners: {key: '/app/ws/partners', path: '/app/ws/partners', txt: '合作伙伴'},
             ws_articles: {key: '/app/ws/articles', path: '/app/ws/articles', txt: '动态管理'},
-            ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查O问卷模板'},
+            ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查问卷模板'},
 
             admin_admins: {key: '/app/admin/admins', path: '/app/admin/admins', txt: '管理员'},
             admin_roles: {key: '/app/admin/roles', path: '/app/admin/roles', txt: '权限组'},
@@ -126,8 +126,6 @@ let CTYPE = (() => {
                 },
             },
         },
-
-        bannerTypes: [{type: 1, label: 'PC首页'}, {type: 2, label: '移动端首页'}],
 
         REGION_PATH: 'http://fs.maidaotech.cn/assets/js/pca-code.json'
 

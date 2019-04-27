@@ -3,7 +3,6 @@ import App from '../../common/App.jsx'
 import U from '../../common/U.jsx'
 import Utils from '../../common/Utils.jsx'
 import {Button, Input, InputNumber, message, Modal, Select, Switch} from 'antd';
-import CTYPE from "../../common/CTYPE";
 import {OSSWrap} from "../../common";
 import '../../assets/css/common/common-edit.less'
 
@@ -61,10 +60,6 @@ export default class BannerEdit extends React.Component {
         let {banner = {}} = this.state;
         let {id, title, url, status, priority, type, img} = banner;
 
-        if (U.str.isEmpty(type) || type === 0) {
-            message.warn('请选择类型');
-            return;
-        }
         if (U.str.isEmpty(title)) {
             message.warn('请填写名称');
             return;
@@ -99,9 +94,12 @@ export default class BannerEdit extends React.Component {
         let {banner = {}} = this.state;
         let {id, title, url, status, priority, type = 1, img} = banner;
 
-        let isPC = type === 1;
+        let isPC = type % 2 === 1;
 
-        let style = isPC ? {width: '480px', height: '182px'} : {width: '187px', height: '105px'};
+        let style = isPC ? (type === 1 ? {width: '480px', height: '160px'} : {
+            width: '480px',
+            height: '182px'
+        }) : {width: '187px', height: '105px'};
 
         return <Modal title={'编辑Banner'}
                       getContainer={() => Utils.common.createModalContainer(id_div)}
@@ -113,24 +111,6 @@ export default class BannerEdit extends React.Component {
             <div className="common-edit-page">
 
                 <div className="form">
-
-                    <div className="line">
-                        <p className='p required'>类型</p>
-                        <Select value={type.toString()} style={{width: 300}} onChange={(v) => {
-                            this.setState({
-                                banner: {
-                                    ...banner,
-                                    type: parseInt(v)
-                                }
-                            })
-                        }}>
-                            <Option key='0'>请选择</Option>
-                            {CTYPE.bannerTypes.map((t) => {
-                                return <Option key={t.type.toString()}>{t.label}</Option>
-
-                            })}
-                        </Select>
-                    </div>
 
                     <div className="line">
                         <p className='p required'>名称</p>
@@ -157,7 +137,7 @@ export default class BannerEdit extends React.Component {
                                     <input className="file" type='file' onChange={this.handleNewImage}/>
                                     选择图片</Button>
                                 <br/>
-                                建议上传图片尺寸<span>{isPC ? '1920*730' : '750*420'}</span>，.jpg、.png格式，文件小于1M
+                                建议上传图片尺寸<span>{isPC ? (type === 1 ? '1920*640' : '1920*730') : '750*420'}</span>，.jpg、.png格式，文件小于1M
                             </div>
                         </div>
                     </div>

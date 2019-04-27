@@ -16,6 +16,8 @@ export default class Banners extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+
+            bannerTypes: [],
             type: 1,
 
             list: [],
@@ -25,7 +27,15 @@ export default class Banners extends React.Component {
 
     componentDidMount() {
         this.loadData();
+        this.loadProps();
     }
+
+    loadProps = () => {
+        App.api('adm/banner/bannerTypes').then((bannerTypes) => {
+                this.setState({bannerTypes});
+            }
+        );
+    };
 
     loadData = () => {
         this.setState({loading: true});
@@ -73,7 +83,7 @@ export default class Banners extends React.Component {
 
     render() {
 
-        let {type, list = [], loading} = this.state;
+        let {bannerTypes = [], type, list = [], loading} = this.state;
 
         let imgs = [];
         list.map((item) => {
@@ -87,8 +97,8 @@ export default class Banners extends React.Component {
             <Card bordered={false}>
 
                 <Tabs onChange={this.tabClick} activeKey={type.toString()}>
-                    {CTYPE.bannerTypes.map((t, i) => {
-                        return <TabPane tab={t.label} key={t.type}/>
+                    {bannerTypes.map((t, i) => {
+                        return <TabPane tab={t.val} key={t.key}/>
                     })}
                 </Tabs>
 
