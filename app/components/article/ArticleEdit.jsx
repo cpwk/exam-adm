@@ -1,5 +1,5 @@
 import React from 'react'
-import {App, CTYPE, OSSWrap, U} from '../../common'
+import {App, CTYPE, U} from '../../common'
 import {Button, Card, Form, Input, InputNumber, message, Radio} from 'antd';
 import {Link} from 'react-router-dom';
 import BreadcrumbCustom from '../BreadcrumbCustom'
@@ -105,7 +105,7 @@ class ArticleEditForm extends React.Component {
         let {id, article} = this.state;
 
         const {getFieldDecorator} = this.props.form;
-        let {img, content} = article;
+        let {img, content = ''} = article;
 
         return <div className="common-edit-page">
 

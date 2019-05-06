@@ -551,7 +551,20 @@ var U = (function () {
             }
             return new Blob([new Uint8Array(array)], {type: type});
         };
-        return {getBlobBydataURI}
+
+        let toFile = function (dataURL) {
+            var arr = dataURL.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            var offset = mime.indexOf('/');
+            var suffix = offset > 0 ? mime.substring(offset + 1) : null;
+            var fileName = suffix ? '1.' + suffix : '1';
+            return new File([u8arr], fileName, {type: mime});
+        };
+
+        return {getBlobBydataURI, toFile}
     })();
 
     return {

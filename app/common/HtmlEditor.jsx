@@ -9,7 +9,9 @@ import 'froala-editor/js/languages/zh_cn.js';
 import FroalaEditor from 'react-froala-wysiwyg';
 import '../assets/css/common/html-editor.less'
 import Spinning from './Spinning';
-import {OSSWrap, U} from "./index";
+import {OSSWrap, U, Utils} from "./index";
+import EditorUtils from "./EditorUtils";
+import {turnImportImg} from "./Spider";
 
 @Spinning
 export default class HtmlEditor extends React.Component {
@@ -109,7 +111,32 @@ export default class HtmlEditor extends React.Component {
         return false;
     };
 
+    syncContentWrap = (content) => {
+        // 处理外部编辑器导入的内容
+        this.setState({spinning: true}, () => {
+            EditorUtils.parseContent(content, {namespace: 'course-content'}, (converted) => {
+                this.setState({spinning: false});
+                this.props.syncContent(converted);
+            });
+        });
+    };
+
+    onSpiderOK = (article) => {
+        this.setState({
+            spinning: true
+        });
+        turnImportImg(article.content, (content) => {
+            this.props.syncContent(content, this.state.index);
+            this.setState({
+                spinning: false
+            });
+        });
+    };
+
     render() {
+
+        let {model = ''} = this.state;
+
         return (
             <div className="html-editor">
                 <FroalaEditor
@@ -140,9 +167,23 @@ export default class HtmlEditor extends React.Component {
                         },
                         imageInsertButtons: ['imageUpload',]
                     }}
-                    model={this.state.model}
-                    onModelChange={this.handleModelChange}
-                />
+                    model={model}
+                    onModelChange={this.handleModelChange}/>
+
+                <ul className='cz-addon'>
+                    <li>
+                        <a className='xiumi' onClick={() => {
+                            Utils.common.xiumiEditor(this.syncContentWrap);
+                        }}><i/>秀米插件</a>
+                    </li>
+
+                    <li>
+                        <a className='wx' onClick={() => {
+                            Utils.common.wxSpider(this.onSpiderOK);
+                        }}><i/>微信文章导入</a>
+                    </li>
+
+                </ul>
             </div>
         )
     }

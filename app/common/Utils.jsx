@@ -9,6 +9,8 @@ import ImgEditor from "./ImgEditor";
 import {Alert, LocaleProvider, Modal} from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import DialogExport from "./DialogExport";
+import XiumiEditor from "./XiumiEditor";
+import Spider from "./Spider";
 
 let Utils = (function () {
 
@@ -103,9 +105,17 @@ let Utils = (function () {
                                              syncImg={syncImg}/>, {id: 'div-img-editor'});
         };
 
+        let xiumiEditor = (syncContentWrap) => {
+            common.renderReactDOM(<XiumiEditor syncContentWrap={syncContentWrap}/>);
+        };
+
+        let wxSpider = (onSpiderOK) => {
+            Utils.common.renderReactDOM(<Spider onSpiderOK={onSpiderOK}/>);
+        };
 
         return {
-            renderReactDOM, closeModalContainer, createModalContainer, showImgLightbox, showImgEditor
+            renderReactDOM, closeModalContainer, createModalContainer, showImgLightbox, showImgEditor,
+            xiumiEditor, wxSpider
         }
     })();
 

@@ -17,7 +17,7 @@ var ImgToBase64 = function (options, cb, fail) {
     };
     img.onerror = function () {
         //document.body.removeChild(img);
-        App.api('/adm/file/img_to_base64', {url: options.url}).then((data) => {
+        App.api('/common/file/img_to_base64', {url: options.url}).then((data) => {
             cb(data);
         }, (err) => {
             fail && fail(err);
