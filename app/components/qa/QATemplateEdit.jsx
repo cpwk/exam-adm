@@ -226,22 +226,16 @@ class QATemplateEditForm extends React.Component {
                 return isLongTag ? <Tooltip title={tag} key={tag}>{tagElem}</Tooltip> : tagElem;
             })}
             {active_index === _index && inputVisible && (
-                <Input
-                    ref={this.saveInputRef}
-                    type="text"
-                    size="small"
-                    style={{width: 78}}
-                    value={inputValue}
-                    onChange={this.handleInputChange}
-                    onBlur={() => this.handleInputConfirm(_index)}
-                    onPressEnter={() => this.handleInputConfirm(_index)}
-                />
+                <Input ref={this.saveInputRef}
+                       type="text" size="small" style={{width: 78}}
+                       value={inputValue}
+                       onChange={this.handleInputChange}
+                       onBlur={() => this.handleInputConfirm(_index)}
+                       onPressEnter={() => this.handleInputConfirm(_index)}/>
             )}
             {(active_index !== _index || !inputVisible) && (
-                <Tag
-                    onClick={() => this.showInput(_index)}
-                    style={{background: '#fff', borderStyle: 'dashed'}}
-                >
+                <Tag onClick={() => this.showInput(_index)}
+                     style={{background: '#fff', borderStyle: 'dashed'}}>
                     <Icon type="plus"/> 添加
                 </Tag>
             )}

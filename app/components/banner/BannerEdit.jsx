@@ -3,7 +3,7 @@ import App from '../../common/App.jsx'
 import U from '../../common/U.jsx'
 import Utils from '../../common/Utils.jsx'
 import {Button, Input, InputNumber, message, Modal, Select, Switch} from 'antd';
-import {OSSWrap} from "../../common";
+import {CTYPE, OSSWrap} from "../../common";
 import '../../assets/css/common/common-edit.less'
 
 const Option = Select.Option;
@@ -94,12 +94,29 @@ export default class BannerEdit extends React.Component {
         let {banner = {}} = this.state;
         let {id, title, url, status, priority, type = 1, img} = banner;
 
-        let isPC = type % 2 === 1;
-
-        let style = isPC ? (type === 1 ? {width: '480px', height: '160px'} : {
-            width: '480px',
-            height: '182px'
-        }) : {width: '187px', height: '105px'};
+        let style = {};
+        let scale = '';
+        if (type % 2 === 1) {
+            switch (type) {
+                case CTYPE.bannerType.HOME_PC: {
+                    style = {width: '480px', height: '160px'};
+                    scale = '1920*640';
+                    break;
+                }
+                case CTYPE.bannerType.SERVICE_PC: {
+                    style = {width: '480px', height: '140px'};
+                    scale = '1920*560';
+                    break;
+                }
+                default: {
+                    style = {width: '480px', height: '182px'};
+                    scale = '1920*730';
+                }
+            }
+        } else {
+            style = {width: '187px', height: '105px'};
+            scale = '750*420';
+        }
 
         return <Modal title={'编辑Banner'}
                       getContainer={() => Utils.common.createModalContainer(id_div)}
@@ -137,7 +154,7 @@ export default class BannerEdit extends React.Component {
                                     <input className="file" type='file' onChange={this.handleNewImage}/>
                                     选择图片</Button>
                                 <br/>
-                                建议上传图片尺寸<span>{isPC ? (type === 1 ? '1920*640' : '1920*730') : '750*420'}</span>，.jpg、.png格式，文件小于1M
+                                建议上传图片尺寸<span>{scale}</span>，.jpg、.png格式，文件小于1M
                             </div>
                         </div>
                     </div>

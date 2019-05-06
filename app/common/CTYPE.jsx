@@ -127,7 +127,10 @@ let CTYPE = (() => {
             },
         },
 
-        REGION_PATH: 'http://fs.maidaotech.cn/assets/js/pca-code.json'
+        REGION_PATH: 'http://fs.maidaotech.cn/assets/js/pca-code.json',
+        bannerType: {
+            HOME_PC: 1, JAVA_PRY_PC: 3, JAVA_ADV_PC: 5, SERVICE_PC: 7
+        }
 
     }
 

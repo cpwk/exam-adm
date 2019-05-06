@@ -4,8 +4,6 @@ import BreadcrumbCustom from '../BreadcrumbCustom';
 import App from '../../common/App.jsx';
 import {CTYPE, Utils} from "../../common";
 
-const minY = new Date().getFullYear();
-
 export default class QATemplates extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +22,6 @@ export default class QATemplates extends React.Component {
 
     loadData = () => {
         this.setState({loading: true});
-        let p = this.state.pagination;
         Utils.nProgress.start();
         App.api('adm/qa/qaTemplates').then((list) => {
             this.setState({
