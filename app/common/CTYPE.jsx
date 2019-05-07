@@ -62,6 +62,7 @@ let CTYPE = (() => {
             ws_partners: {key: '/app/ws/partners', path: '/app/ws/partners', txt: '合作伙伴'},
             ws_articles: {key: '/app/ws/articles', path: '/app/ws/articles', txt: '动态管理'},
             ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查问卷模板'},
+            ws_training_projects: {key: '/app/ws/training-projects', path: '/app/ws/training-projects', txt: '实战项目管理'},
 
             admin_admins: {key: '/app/admin/admins', path: '/app/admin/admins', txt: '管理员'},
             admin_roles: {key: '/app/admin/roles', path: '/app/admin/roles', txt: '权限组'},
