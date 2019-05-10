@@ -125,7 +125,7 @@ export default class Jobs extends React.Component {
                     width: '100px',
                     render: (obj, c) => {
                         return <div className="state">
-                            {c.state === 1 ? <span className="important">上架</span> :
+                            {c.status === 1 ? <span className="important">上架</span> :
                                 <span className="disabled">下架</span>}
                         </div>
                     }
