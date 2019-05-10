@@ -101,10 +101,10 @@ export default class HtmlEditor extends React.Component {
 
     videoBeforeUpload = (e, editor, $video) => {
         this.props.startLoading();
-        OSSWrap.upload($video[0]).then((result) => {
+        OSSWrap.upload($video[0], {}).then((result) => {
             editor.video.insert(`<video preload="auto"  style='object-fit:fill;width:100%' controls="true" webkit-playsinline="true"  x-webkit-airplay="allow" x5-video-player-type="h5" playsinline="true"  autoplay="true" src="${result.url}" style="width:100%"></video>`);
             this.props.stopLoading();
-        }).catch(function (err) {
+        }).catch((err) => {
             console.log(err);
             this.props.stopLoading();
         });

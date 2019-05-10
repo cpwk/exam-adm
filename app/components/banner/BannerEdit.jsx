@@ -97,22 +97,18 @@ export default class BannerEdit extends React.Component {
         let style = {};
         let scale = '';
         if (type % 2 === 1) {
-            switch (type) {
-                case CTYPE.bannerType.HOME_PC: {
-                    style = {width: '480px', height: '160px'};
-                    scale = '1920*640';
-                    break;
-                }
-                case CTYPE.bannerType.SERVICE_PC: {
-                    style = {width: '480px', height: '140px'};
-                    scale = '1920*560';
-                    break;
-                }
-                default: {
-                    style = {width: '480px', height: '182px'};
-                    scale = '1920*730';
-                }
+
+            if (type === CTYPE.bannerType.HOME_PC || type === CTYPE.bannerType.ABOUT_PC) {
+                style = {width: '480px', height: '160px'};
+                scale = '1920*640';
+            } else if (type === CTYPE.bannerType.SERVICE_PC || type === CTYPE.bannerType.REACT_PC) {
+                style = {width: '480px', height: '140px'};
+                scale = '1920*560';
+            } else {
+                style = {width: '480px', height: '182px'};
+                scale = '1920*730';
             }
+
         } else {
             style = {width: '187px', height: '105px'};
             scale = '750*420';

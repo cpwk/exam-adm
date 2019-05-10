@@ -176,9 +176,7 @@ class TrainingProjectEditForm extends React.Component {
                         {...CTYPE.formItemLayout}
                         label='简介'
                         hasFeedback>
-                        {getFieldDecorator('descr', {
-                            rules: [CTYPE.fieldDecorator_rule_title]
-                        })(
+                        {getFieldDecorator('descr')(
                             <TextArea rows={5} placeholder={`建议输入字数不超过${CTYPE.maxlength.intro}个字`}/>
                         )}
                     </FormItem>

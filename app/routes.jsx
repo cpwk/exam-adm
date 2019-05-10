@@ -28,6 +28,7 @@ import QATemplateEdit from './components/qa/QATemplateEdit'
 import QAPapers from './components/qa/QAPapers'
 import TrainingProjects from './components/trainingproject/TrainingProjects'
 import TrainingProjectEdit from './components/trainingproject/TrainingProjectEdit'
+import Jobs from './components/job/Jobs'
 
 const routes = (
     <HashRouter>
@@ -70,6 +71,7 @@ const routes = (
                                 <Route path={'/app/ws/qa-papers/:id'} component={QAPapers}/>
                                 <Route path={'/app/ws/training-projects'} component={TrainingProjects}/>
                                 <Route path={'/app/ws/training-project-edit/:id'} component={TrainingProjectEdit}/>
+                                <Route path={'/app/ws/jobs'} component={Jobs}/>
 
                             </Index>
                         )}/>

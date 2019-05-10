@@ -63,6 +63,7 @@ let CTYPE = (() => {
             ws_articles: {key: '/app/ws/articles', path: '/app/ws/articles', txt: '动态管理'},
             ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查问卷模板'},
             ws_training_projects: {key: '/app/ws/training-projects', path: '/app/ws/training-projects', txt: '实战项目管理'},
+            ws_jobs: {key: '/app/ws/jobs', path: '/app/ws/jobs', txt: '招聘管理'},
 
             admin_admins: {key: '/app/admin/admins', path: '/app/admin/admins', txt: '管理员'},
             admin_roles: {key: '/app/admin/roles', path: '/app/admin/roles', txt: '权限组'},
@@ -130,7 +131,7 @@ let CTYPE = (() => {
 
         REGION_PATH: 'http://fs.maidaotech.cn/assets/js/pca-code.json',
         bannerType: {
-            HOME_PC: 1, JAVA_PRY_PC: 3, JAVA_ADV_PC: 5, SERVICE_PC: 7
+            HOME_PC: 1, JAVA_PRY_PC: 3, JAVA_ADV_PC: 5, SERVICE_PC: 7, REACT_PC: 9, ABOUT_PC: 11
         }
 
     }

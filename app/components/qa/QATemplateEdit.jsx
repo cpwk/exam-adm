@@ -23,6 +23,18 @@ class QATemplateEditForm extends React.Component {
     }
 
     componentDidMount() {
+        this.loadProps();
+    }
+
+    loadProps = () => {
+        App.api('common/formTypes').then((formTypes) => {
+            this.setState({formTypes}, () => {
+                this.loadData()
+            });
+        })
+    };
+
+    loadData = () => {
         let {id} = this.state;
         if (id !== 0) {
             App.api('adm/qa/qaTemplate', {id}).then((qaTemplate) => {
@@ -34,14 +46,7 @@ class QATemplateEditForm extends React.Component {
         } else {
             this.setForm({});
         }
-        this.loadProps();
         this.formSortListner();
-    }
-
-    loadProps = () => {
-        App.api('common/formTypes').then((formTypes) => {
-            this.setState({formTypes});
-        })
     };
 
     setForm = (qaTemplate) => {
