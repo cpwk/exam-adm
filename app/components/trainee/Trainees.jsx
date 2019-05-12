@@ -186,6 +186,14 @@ export default class Trainees extends React.Component {
                         className: 'txt-center',
                         render: (col, row, i) => i + 1
                     }, {
+                        title: '学号',
+                        dataIndex: 'studentNum',
+                        className: 'txt-center'
+                    }, {
+                        title: '用户名',
+                        dataIndex: 'username',
+                        className: 'txt-center'
+                    }, {
                         title: '姓名',
                         dataIndex: 'name',
                         className: 'txt-center'
