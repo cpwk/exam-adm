@@ -75,13 +75,12 @@ class SiderCustom extends Component {
 
         let {
             ADMIN_LIST, ROLE_EDIT, TERM_EDIT, TRAINER_EDIT, TRAINEE_EDIT,
-            BANNER_EDIT, PARTNER_EDIT, ARTICLE_EDIT, QA_EDIT, TRAINING_PROJECT_EDIT, JOB_EDIT
+            BANNER_EDIT, PARTNER_EDIT, ARTICLE_EDIT, QA_EDIT, TRAINING_PROJECT_EDIT, JOB_EDIT, FAQ_EDIT
         } = Utils.adminPermissions;
 
         let withSetting = TERM_EDIT;
 
-        let withWS = BANNER_EDIT || PARTNER_EDIT || ARTICLE_EDIT || QA_EDIT || TRAINING_PROJECT_EDIT || JOB_EDIT;
-
+        let withWS = BANNER_EDIT || PARTNER_EDIT || ARTICLE_EDIT || QA_EDIT || TRAINING_PROJECT_EDIT || JOB_EDIT || FAQ_EDIT;
 
         let {firstHide, selectedKey, openKey} = this.state;
 
@@ -139,6 +138,8 @@ class SiderCustom extends Component {
                             to={CTYPE.link.ws_training_projects.path}>{CTYPE.link.ws_training_projects.txt}</Link></Menu.Item>}
                         {JOB_EDIT && <Menu.Item key={CTYPE.link.ws_jobs.key}><Link
                             to={CTYPE.link.ws_jobs.path}>{CTYPE.link.ws_jobs.txt}</Link></Menu.Item>}
+                        {FAQ_EDIT && <Menu.Item key={CTYPE.link.ws_faqs.key}><Link
+                            to={CTYPE.link.ws_faqs.path}>{CTYPE.link.ws_faqs.txt}</Link></Menu.Item>}
                     </SubMenu>}
 
                     {ADMIN_LIST && <SubMenu key='/app/admin'

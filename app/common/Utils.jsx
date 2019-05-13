@@ -220,7 +220,8 @@ let Utils = (function () {
                 ARTICLE_EDIT: authPermission('ARTICLE_EDIT'),
                 TRAINING_PROJECT_EDIT: authPermission('TRAINING_PROJECT_EDIT'),
                 QA_EDIT: authPermission('QA_EDIT'),
-                JOB_EDIT: authPermission('JOB_EDIT')
+                JOB_EDIT: authPermission('JOB_EDIT'),
+                FAQ_EDIT: authPermission('FAQ_EDIT')
 
 
             }

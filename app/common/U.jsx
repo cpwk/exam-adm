@@ -108,6 +108,24 @@ var U = (function () {
             return '';
         };
 
+        let rn2arr = (str) => {
+            str = str.replace(/(\r\n)|(\n)/g, '@');
+            let ss = [];
+            str.split('@').map((s) => {
+                if (isNotEmpty(s)) {
+                    ss.push(s);
+                }
+            });
+            return ss;
+        };
+
+        let arr2rn = (arr) => {
+            if (!arr || arr.length === 0) {
+                return '';
+            }
+            return arr.join('\r\n');
+        };
+
         return {
             isNull: isNull,
             isNotNull: isNotNull,
@@ -116,7 +134,7 @@ var U = (function () {
             startsWith: startsWith,
             endsWith: endsWith,
             replaceAll: replaceAll,
-            trim, isChinaMobile, isUrl, randomString, isNumber, trimChinaMobile, isEmail
+            trim, isChinaMobile, isUrl, randomString, isNumber, trimChinaMobile, isEmail, rn2arr, arr2rn
         };
     })();
 
