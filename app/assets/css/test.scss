@@ -1,0 +1,45 @@
+.required {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    left: 17px;
+    top: 12px;
+    content: '* ';
+    color: red;
+    font-size: 14px;
+    font-weight: 900;
+  }
+}
+
+.requiredTwo {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    left: -7px;
+    top: 12px;
+    content: '* ';
+    color: red;
+    font-size: 14px;
+    font-weight: 900;
+  }
+}
+
+.requiredOne {
+  position: relative;
+
+  &:before {
+    //position: absolute;
+    //left: -10px;
+    //top: -12px;
+    content: '* ';
+    color: red;
+    //font-size: 14px;
+    font-weight: 900;
+    margin-left: 85%;
+  }
+}
+
+
+

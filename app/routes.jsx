@@ -35,7 +35,7 @@ import FaqEdit from './components/faq/FaqEdit'
 const routes = (
     <HashRouter>
         <Switch>
-            <Route path='/' children={() => (
+            <Route path='/' children={() =>(
                 <Page>
                     <Switch>
 

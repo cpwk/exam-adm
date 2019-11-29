@@ -430,7 +430,7 @@ var U = (function () {
         if (val > 10000) {
             return '>1万';
         }
-    }
+    };
 
     var getDomainFromUrl = function (url) {
         var offset = url.indexOf("//");
