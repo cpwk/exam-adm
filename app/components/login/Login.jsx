@@ -57,17 +57,21 @@ class Login extends React.Component {
                         message.warning(err[key].errors[0].message);
                     });
                 } else {
-                    App.api('adm/admin/signin', {
+                    App.api('/admin/signIn', {
                             admin: JSON.stringify(admin)
                         }
-                    ).then(res => {
+                    ).then((result) => {
 
-                        Utils.adm.savePermissions(res.admin.role.permissions);
+                        // Utils.adm.savePermissions(res.admin.role.permissions);
 
-                        KvStorage.set('admin-profile', JSON.stringify(res.admin));
-                        KvStorage.set('admin-token', res.session.token);
+                        // KvStorage.set('admin-profile', JSON.stringify(res.admin));
+                        // KvStorage.set('admin-token', res.session.token);
 
-                        App.go('');
+
+                        App.afterSignin("admin-token", result.adminSession.token);
+                        App.afterSignin("admin", JSON.stringify(result.admin));
+
+                        App.go('/index');
 
                     })
                 }
@@ -85,7 +89,7 @@ class Login extends React.Component {
                     <div className="login-logo"/>
                     <Card style={{width: 300, height: 200}} bordered={false}>
                         <FormItem>
-                            {getFieldDecorator('username', {
+                            {getFieldDecorator('userName', {
                                 rules: [{required: true, message: '请输入账号!'}],
                             })(
                                 <Input prefix={<Icon type="user" style={{fontSize: 13}}/>}

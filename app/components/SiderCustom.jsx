@@ -73,14 +73,14 @@ class SiderCustom extends Component {
 
     render() {
 
-        let {
-            ADMIN_LIST, ROLE_EDIT, TERM_EDIT, TRAINER_EDIT, TRAINEE_EDIT,
-            BANNER_EDIT, PARTNER_EDIT, ARTICLE_EDIT, QA_EDIT, TRAINING_PROJECT_EDIT, JOB_EDIT, FAQ_EDIT
-        } = Utils.adminPermissions;
-
-        let withSetting = TERM_EDIT;
-
-        let withWS = BANNER_EDIT || PARTNER_EDIT || ARTICLE_EDIT || QA_EDIT || TRAINING_PROJECT_EDIT || JOB_EDIT || FAQ_EDIT;
+        // let {
+        //     ADMIN_LIST, ROLE_EDIT, TERM_EDIT, TRAINER_EDIT, TRAINEE_EDIT,
+        //     BANNER_EDIT, PARTNER_EDIT, ARTICLE_EDIT, QA_EDIT, TRAINING_PROJECT_EDIT, JOB_EDIT, FAQ_EDIT
+        // } = Utils.adminPermissions;
+        //
+        // let withSetting = TERM_EDIT;
+        //
+        // let withWS = BANNER_EDIT || PARTNER_EDIT || ARTICLE_EDIT || QA_EDIT || TRAINING_PROJECT_EDIT || JOB_EDIT || FAQ_EDIT;
 
         let {firstHide, selectedKey, openKey} = this.state;
 
@@ -103,53 +103,59 @@ class SiderCustom extends Component {
                             className="nav-text">首页</span></Link>
                     </Menu.Item>
 
-                    {TRAINER_EDIT && <SubMenu key='/app/trainer'
+                    <SubMenu key='/app/question'
                                               title={<span><Icon type="solution"/><span
-                                                  className="nav-text">讲师管理</span></span>}>
-                        <Menu.Item key={CTYPE.link.trainers.key}><Link
-                            to={CTYPE.link.trainers.path}>{CTYPE.link.trainers.txt}</Link></Menu.Item>
-                    </SubMenu>}
+                                                  className="nav-text">题库管理</span></span>}>
+                        <Menu.Item key={CTYPE.link.category.key}><Link
+                            to={CTYPE.link.category.path}>{CTYPE.link.category.txt}</Link></Menu.Item>
+                        <Menu.Item key={CTYPE.link.question.key}><Link
+                            to={CTYPE.link.question.path}>{CTYPE.link.question.txt}</Link></Menu.Item>
+                        <Menu.Item key={CTYPE.link.tag.key}><Link
+                            to={CTYPE.link.tag.path}>{CTYPE.link.tag.txt}</Link></Menu.Item>
+                        {/*<Menu.Item key={CTYPE.link.question_edit.key}><Link*/}
+                            {/*to={CTYPE.link.question_edit.path}>{CTYPE.link.question_edit.txt}</Link></Menu.Item>*/}
+                    </SubMenu>
 
-                    {TRAINEE_EDIT && <SubMenu key='/app/trainee'
-                                              title={<span><Icon type="usergroup-add"/><span
-                                                  className="nav-text">学员管理</span></span>}>
-                        <Menu.Item key={CTYPE.link.trainees.key}><Link
-                            to={CTYPE.link.trainees.path}>{CTYPE.link.trainees.txt}</Link></Menu.Item>
-                    </SubMenu>}
+                    {/*{TRAINEE_EDIT && <SubMenu key='/app/trainee'*/}
+                                              {/*title={<span><Icon type="usergroup-add"/><span*/}
+                                                  {/*className="nav-text">学员管理</span></span>}>*/}
+                        {/*<Menu.Item key={CTYPE.link.trainees.key}><Link*/}
+                            {/*to={CTYPE.link.trainees.path}>{CTYPE.link.trainees.txt}</Link></Menu.Item>*/}
+                    {/*</SubMenu>}*/}
 
-                    {withSetting && <SubMenu key='/app/setting'
-                                             title={<span><Icon type="setting"/><span
-                                                 className="nav-text">基础配置</span></span>}>
-                        {TERM_EDIT && <Menu.Item key={CTYPE.link.terms.key}><Link
-                            to={CTYPE.link.terms.path}>{CTYPE.link.terms.txt}</Link></Menu.Item>}
-                    </SubMenu>}
+                    {/*{withSetting && <SubMenu key='/app/setting'*/}
+                                             {/*title={<span><Icon type="setting"/><span*/}
+                                                 {/*className="nav-text">基础配置</span></span>}>*/}
+                        {/*{TERM_EDIT && <Menu.Item key={CTYPE.link.terms.key}><Link*/}
+                            {/*to={CTYPE.link.terms.path}>{CTYPE.link.terms.txt}</Link></Menu.Item>}*/}
+                    {/*</SubMenu>}*/}
 
-                    {withWS && <SubMenu key='/app/ws'
-                                        title={<span><Icon type="copy"/><span className="nav-text">网站管理</span></span>}>
-                        {BANNER_EDIT && <Menu.Item key={CTYPE.link.ws_banners.key}><Link
-                            to={CTYPE.link.ws_banners.path}>{CTYPE.link.ws_banners.txt}</Link></Menu.Item>}
-                        {PARTNER_EDIT && <Menu.Item key={CTYPE.link.ws_partners.key}><Link
-                            to={CTYPE.link.ws_partners.path}>{CTYPE.link.ws_partners.txt}</Link></Menu.Item>}
-                        {ARTICLE_EDIT && <Menu.Item key={CTYPE.link.ws_articles.key}><Link
-                            to={CTYPE.link.ws_articles.path}>{CTYPE.link.ws_articles.txt}</Link></Menu.Item>}
-                        {QA_EDIT && <Menu.Item key={CTYPE.link.ws_qa_templates.key}><Link
-                            to={CTYPE.link.ws_qa_templates.path}>{CTYPE.link.ws_qa_templates.txt}</Link></Menu.Item>}
-                        {TRAINING_PROJECT_EDIT && <Menu.Item key={CTYPE.link.ws_training_projects.key}><Link
-                            to={CTYPE.link.ws_training_projects.path}>{CTYPE.link.ws_training_projects.txt}</Link></Menu.Item>}
-                        {JOB_EDIT && <Menu.Item key={CTYPE.link.ws_jobs.key}><Link
-                            to={CTYPE.link.ws_jobs.path}>{CTYPE.link.ws_jobs.txt}</Link></Menu.Item>}
-                        {FAQ_EDIT && <Menu.Item key={CTYPE.link.ws_faqs.key}><Link
-                            to={CTYPE.link.ws_faqs.path}>{CTYPE.link.ws_faqs.txt}</Link></Menu.Item>}
-                    </SubMenu>}
+                    {/*{withWS && <SubMenu key='/app/ws'*/}
+                                        {/*title={<span><Icon type="copy"/><span className="nav-text">网站管理</span></span>}>*/}
+                        {/*{BANNER_EDIT && <Menu.Item key={CTYPE.link.ws_banners.key}><Link*/}
+                            {/*to={CTYPE.link.ws_banners.path}>{CTYPE.link.ws_banners.txt}</Link></Menu.Item>}*/}
+                        {/*{PARTNER_EDIT && <Menu.Item key={CTYPE.link.ws_partners.key}><Link*/}
+                            {/*to={CTYPE.link.ws_partners.path}>{CTYPE.link.ws_partners.txt}</Link></Menu.Item>}*/}
+                        {/*{ARTICLE_EDIT && <Menu.Item key={CTYPE.link.ws_articles.key}><Link*/}
+                            {/*to={CTYPE.link.ws_articles.path}>{CTYPE.link.ws_articles.txt}</Link></Menu.Item>}*/}
+                        {/*{QA_EDIT && <Menu.Item key={CTYPE.link.ws_qa_templates.key}><Link*/}
+                            {/*to={CTYPE.link.ws_qa_templates.path}>{CTYPE.link.ws_qa_templates.txt}</Link></Menu.Item>}*/}
+                        {/*{TRAINING_PROJECT_EDIT && <Menu.Item key={CTYPE.link.ws_training_projects.key}><Link*/}
+                            {/*to={CTYPE.link.ws_training_projects.path}>{CTYPE.link.ws_training_projects.txt}</Link></Menu.Item>}*/}
+                        {/*{JOB_EDIT && <Menu.Item key={CTYPE.link.ws_jobs.key}><Link*/}
+                            {/*to={CTYPE.link.ws_jobs.path}>{CTYPE.link.ws_jobs.txt}</Link></Menu.Item>}*/}
+                        {/*{FAQ_EDIT && <Menu.Item key={CTYPE.link.ws_faqs.key}><Link*/}
+                            {/*to={CTYPE.link.ws_faqs.path}>{CTYPE.link.ws_faqs.txt}</Link></Menu.Item>}*/}
+                    {/*</SubMenu>}*/}
 
-                    {ADMIN_LIST && <SubMenu key='/app/admin'
+                    <SubMenu key='/app/admin'
                                             title={<span><Icon type="usergroup-add"/><span
                                                 className="nav-text">管理&权限</span></span>}>
                         <Menu.Item key={CTYPE.link.admin_admins.key}><Link
                             to={CTYPE.link.admin_admins.path}>{CTYPE.link.admin_admins.txt}</Link></Menu.Item>
-                        {ROLE_EDIT && <Menu.Item key={CTYPE.link.admin_roles.key}><Link
-                            to={CTYPE.link.admin_roles.path}>{CTYPE.link.admin_roles.txt}</Link></Menu.Item>}
-                    </SubMenu>}
+                        <Menu.Item key={CTYPE.link.admin_roles.key}><Link
+                            to={CTYPE.link.admin_roles.path}>{CTYPE.link.admin_roles.txt}</Link></Menu.Item>
+                    </SubMenu>
 
                 </Menu>
                 <style>

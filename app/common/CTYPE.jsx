@@ -9,7 +9,6 @@ let CTYPE = (() => {
 
     let eidtMinWidth = 900;
 
-
     let formStyle = {minWidth: eidtMinWidth, maxWidth: eidtMaxWidth, marginTop: '20px'};
 
     return {
@@ -24,7 +23,7 @@ let CTYPE = (() => {
         maxlength: maxlength,
 
         minlength: minlength,
-        pagination: {pageSize: 20},
+        pagination: {pageSize: 10},
 
         formStyle,
 
@@ -53,8 +52,10 @@ let CTYPE = (() => {
 
         link: {
 
-            trainers: {key: '/app/trainer/trainers', path: '/app/trainer/trainers', txt: '讲师管理'},
-            trainees: {key: '/app/trainee/trainees', path: '/app/trainee/trainees', txt: '学员管理'},
+            question: {key: '/app/question/question', path: '/app/question/question', txt: '试题管理'},
+            // question_edit: {key: '/app/question/questionEdit/:id', path: '/app/question/questionEdit/:id', txt: '添加试题'},
+            category: {key: '/app/category/category', path: '/app/category/category', txt: '分类管理'},
+            tag: {key: '/app/tag/tag', path: '/app/tag/tag', txt: '标签管理'},
 
             terms: {key: '/app/setting/terms', path: '/app/setting/terms', txt: '学期配置'},
 
@@ -85,6 +86,12 @@ let CTYPE = (() => {
             wrapperCol: {
                 xs: {span: 24},
                 sm: {span: 16},
+            },
+        },
+        formItemLayoutWithOutLabel : {
+            wrapperCol: {
+                xs: {span: 24, offset: 0},
+                sm: {span: 20, offset: 4},
             },
         },
         dialogItemLayout: {
@@ -129,7 +136,16 @@ let CTYPE = (() => {
                 },
             },
         },
-
+        formItemLayouts : {
+            labelCol: {
+                xs: {span: 24},
+                sm: {span: 4},
+            },
+            wrapperCol: {
+                xs: {span: 24},
+                sm: {span: 20},
+            },
+        },
         REGION_PATH: 'http://fs.maidaotech.cn/assets/js/pca-code.json',
         bannerType: {
             HOME_PC: 1, JAVA_PRY_PC: 3, JAVA_ADV_PC: 5, SERVICE_PC: 7, REACT_PC: 9, ABOUT_PC: 11

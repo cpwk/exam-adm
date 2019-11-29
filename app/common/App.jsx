@@ -46,14 +46,14 @@ const api = (path, params, options) => {
         options.defaultErrorProcess = true;
     }
 
-    let defaultError = {'code': 600, 'msg': '网络错误'};
+    let defaultError = {'errcode': 600, 'errmsg': '网络错误'};
     let apiPromise = function (resolve, reject) {
         let rejectWrap = reject;
-
         if (options.defaultErrorProcess) {
             rejectWrap = function (ret) {
-                let {error = {}} = ret;
-                message.error(error.msg);
+                let {errcode, errmsg = {}} = ret;
+                console.log(errmsg);
+                message.error(errmsg);
                 reject(ret);
             };
         }
@@ -89,17 +89,12 @@ const api = (path, params, options) => {
             }
         }).then(function (response) {
             response.json().then(function (ret) {
-                var error = ret.error;
+                var error = ret.errcode;
                 if (error) {
-                    var code = error.code;
-                    if (code === 603) {
-                        //登录会话过期
-                        message.warn('请重新登录');
-                        logout();
-                        go('/login');
-                        return;
-                    }
+                    var errcode = error;
                     rejectWrap(ret);
+                    logout();
+                    //go('/login');
                     return;
                 }
                 resolve(ret.result);
@@ -121,6 +116,10 @@ let getAdmProfile = function () {
     return JSON.parse(getCookie('admin-profile') || '{}');
 };
 
+let afterSignin=(k,v)=>{
+    saveCookie(k,v);
+};
+
 export default {
-    go, api, API_BASE, logout, getAdmProfile
+    go, api, API_BASE, logout, getAdmProfile,afterSignin
 };

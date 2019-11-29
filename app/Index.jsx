@@ -20,41 +20,15 @@ export default class Index extends Component {
     }
 
     componentDidMount() {
-        if (window.location.hash.indexOf('login') < 0) {
-            let adm = App.getAdmProfile();
-            if (!adm.id) {
-                App.logout();
-                App.go('/login');
-            } else {
-                this.loadPermissions(0);
-            }
-        }
+        this.loadPermissions(0);
     }
 
-    loadPermissions = (count) => {
+    loadPermissions = () => {
 
-        let timer = null;
-        if (!Utils.adminPermissions) {
-            if (timer) {
-                clearTimeout(timer);
-            }
-
-            timer = setTimeout(() => {
-                this.loadPermissions(count + 1);
-            }, 500);
-
-            if (count > 3) {
-                clearTimeout(timer);
-                App.logout();
-                App.go('/login');
-            }
-            Utils.adm.initPermissions();
-        } else {
-            this.setState({
-                permissionsLoaded: true
-            });
-            message.destroy();
-        }
+        this.setState({
+            permissionsLoaded: true
+        });
+        message.destroy();
     };
 
     toggle = () => {
@@ -64,23 +38,18 @@ export default class Index extends Component {
     };
 
     render() {
-        let {permissionsLoaded, collapsed} = this.state;
-        if (permissionsLoaded) {
+        let {collapsed} = this.state;
 
-            return <Layout className="ant-layout-has-sider">
-                <SiderCustom collapsed={collapsed}/>
-                <Layout>
-                    <HeaderCustom toggle={this.toggle}/>
-                    <Content style={{margin: '0 16px', overflow: 'initial'}}>
-                        {this.props.children}
-                    </Content>
-                    <Footer style={{textAlign: 'center'}}>
-                    </Footer>
-                </Layout>
+        return <Layout className="ant-layout-has-sider">
+            <SiderCustom collapsed={collapsed}/>
+            <Layout>
+                <HeaderCustom toggle={this.toggle}/>
+                <Content style={{margin: '0 16px', overflow: 'initial'}}>
+                    {this.props.children}
+                </Content>
+                <Footer style={{textAlign: 'center'}}>
+                </Footer>
             </Layout>
-        } else {
-            return <div/>
-        }
+        </Layout>
     }
-
 }

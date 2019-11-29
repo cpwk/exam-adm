@@ -22,12 +22,12 @@ module.exports = {
         progress: true,
         contentBase: './app',
         host: '0.0.0.0',
-        port: 9080,
+        port: 9087,
         disableHostCheck: true
     },
     entry: [
         'babel-polyfill',
-        'webpack-dev-server/client?http://localhost:9080',
+        'webpack-dev-server/client?http://localhost:9087',
         path.resolve(__dirname, 'app/main.jsx')
     ],
     output: {
