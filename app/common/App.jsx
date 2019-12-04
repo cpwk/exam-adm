@@ -89,12 +89,16 @@ const api = (path, params, options) => {
             }
         }).then(function (response) {
             response.json().then(function (ret) {
-                var error = ret.errcode;
-                if (error) {
-                    var errcode = error;
+                var code = ret.errcode;
+                if (code !== 0) {
+                    if (code === 5) {
+                        //登录会话过期
+                        message.warn('请重新登录');
+                        logout();
+                        go('/');
+                        return;
+                    }
                     rejectWrap(ret);
-                    logout();
-                    //go('/login');
                     return;
                 }
                 resolve(ret.result);

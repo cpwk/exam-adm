@@ -53,7 +53,6 @@ export default class Question extends React.Component {
     loadProps = () => {
         App.api('/oms/category/father').then((list) => {
             this.setState({list});
-            console.log(list);
         });
     };
 
@@ -112,14 +111,12 @@ export default class Question extends React.Component {
                     }}>添加试题</Button>
                     <Col span={10} style={{float: 'right'}}>
                         <TreeSelect
-                            // showSearch
                             style={{width: 105}}
                             dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                             placeholder="全部分类"
                             allowClear
                             onSelect={(value) => {
                                 this.setState({value});
-                                console.log(value);
                             }}>
                             {list.map((v, index1) => {
                                 let {id, name, children = []} = v;
@@ -204,10 +201,9 @@ export default class Question extends React.Component {
                         title: '难度',
                         dataIndex: 'd-difficulty',
                         className: 'txt-center',
-                        width:"130px",
                         render: (ob, d) => {
                             return <div className="state">
-                                    <Rate disabled count={d.difficulty} defaultValue={d.difficulty}/>
+                                    <Rate style={{fontSize:14}} disabled count={d.difficulty} defaultValue={d.difficulty}/>
                             </div>
                         }
                     }, {
@@ -218,7 +214,6 @@ export default class Question extends React.Component {
                         render: (tag = []) => {
                             return <div className='state'>
                                 {tag.map((p, i) => {
-                                    console.log(tag);
                                     return <Tag color={"red"} key={i}>{p.name}</Tag>
                                 })}
                             </div>

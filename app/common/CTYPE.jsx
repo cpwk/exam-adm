@@ -53,13 +53,11 @@ let CTYPE = (() => {
         link: {
 
             question: {key: '/app/question/question', path: '/app/question/question', txt: '试题管理'},
-            // question_edit: {key: '/app/question/questionEdit/:id', path: '/app/question/questionEdit/:id', txt: '添加试题'},
             category: {key: '/app/category/category', path: '/app/category/category', txt: '分类管理'},
             tag: {key: '/app/tag/tag', path: '/app/tag/tag', txt: '标签管理'},
-
-            terms: {key: '/app/setting/terms', path: '/app/setting/terms', txt: '学期配置'},
-
-            ws_banners: {key: '/app/ws/banners', path: '/app/ws/banners', txt: 'Banner'},
+            template: {key: '/app/template/template', path: '/app/template/template', txt: '试卷模板'},
+            paper: {key: '/app/paper/paper', path: '/app/paper/paper', txt: '试卷生成'},
+            user: {key: '/app/user/userInfo', path: '/app/user/userInfo', txt: '用户信息'},
             ws_partners: {key: '/app/ws/partners', path: '/app/ws/partners', txt: '合作伙伴'},
             ws_articles: {key: '/app/ws/articles', path: '/app/ws/articles', txt: '动态管理'},
             ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查问卷模板'},

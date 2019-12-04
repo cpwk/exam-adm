@@ -73,7 +73,7 @@ export default class CategoryEdit extends React.Component {
                                        name: e.target.value
                                    }
                                })
-                           }}/>
+                           }}/>详情
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="权重">
                     <InputNumber

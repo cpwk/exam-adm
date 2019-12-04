@@ -102,55 +102,58 @@ class SiderCustom extends Component {
                         <Link to={'/app/dashboard/index'}><Icon type="home"/><span
                             className="nav-text">首页</span></Link>
                     </Menu.Item>
-
                     <SubMenu key='/app/question'
-                                              title={<span><Icon type="solution"/><span
-                                                  className="nav-text">题库管理</span></span>}>
+                             title={<span><Icon type="solution"/><span
+                                 className="nav-text">题库管理</span></span>}>
                         <Menu.Item key={CTYPE.link.category.key}><Link
                             to={CTYPE.link.category.path}>{CTYPE.link.category.txt}</Link></Menu.Item>
                         <Menu.Item key={CTYPE.link.question.key}><Link
                             to={CTYPE.link.question.path}>{CTYPE.link.question.txt}</Link></Menu.Item>
                         <Menu.Item key={CTYPE.link.tag.key}><Link
                             to={CTYPE.link.tag.path}>{CTYPE.link.tag.txt}</Link></Menu.Item>
-                        {/*<Menu.Item key={CTYPE.link.question_edit.key}><Link*/}
-                            {/*to={CTYPE.link.question_edit.path}>{CTYPE.link.question_edit.txt}</Link></Menu.Item>*/}
+                    </SubMenu>
+                    <SubMenu key='/app/template'
+                             title={<span><Icon type="solution"/><span
+                                 className="nav-text">试卷管理</span></span>}>
+                        <Menu.Item key={CTYPE.link.template.key}><Link
+                            to={CTYPE.link.template.path}>{CTYPE.link.template.txt}</Link></Menu.Item>
+                        <Menu.Item key={CTYPE.link.paper.key}><Link
+                            to={CTYPE.link.paper.path}>{CTYPE.link.paper.txt}</Link></Menu.Item>
+                    </SubMenu>
+                    {/*<SubMenu key='/app/paper'*/}
+                    {/*         title={<span><Icon type="setting"/><span*/}
+                    {/*             className="nav-text">试卷管理</span></span>}>*/}
+                    {/*    <Menu.Item key={CTYPE.link.paper.key}><Link*/}
+                    {/*        to={CTYPE.link.paper.path}>{CTYPE.link.paper.txt}</Link></Menu.Item>*/}
+                    {/*</SubMenu>*/}
+                    <SubMenu key='/app/user'
+                             title={<span><Icon type="setting"/><span
+                                 className="nav-text">用户管理</span></span>}>
+                        <Menu.Item key={CTYPE.link.user.key}><Link
+                            to={CTYPE.link.user.path}>{CTYPE.link.user.txt}</Link></Menu.Item>
                     </SubMenu>
 
-                    {/*{TRAINEE_EDIT && <SubMenu key='/app/trainee'*/}
-                                              {/*title={<span><Icon type="usergroup-add"/><span*/}
-                                                  {/*className="nav-text">学员管理</span></span>}>*/}
-                        {/*<Menu.Item key={CTYPE.link.trainees.key}><Link*/}
-                            {/*to={CTYPE.link.trainees.path}>{CTYPE.link.trainees.txt}</Link></Menu.Item>*/}
-                    {/*</SubMenu>}*/}
-
-                    {/*{withSetting && <SubMenu key='/app/setting'*/}
-                                             {/*title={<span><Icon type="setting"/><span*/}
-                                                 {/*className="nav-text">基础配置</span></span>}>*/}
-                        {/*{TERM_EDIT && <Menu.Item key={CTYPE.link.terms.key}><Link*/}
-                            {/*to={CTYPE.link.terms.path}>{CTYPE.link.terms.txt}</Link></Menu.Item>}*/}
-                    {/*</SubMenu>}*/}
-
                     {/*{withWS && <SubMenu key='/app/ws'*/}
-                                        {/*title={<span><Icon type="copy"/><span className="nav-text">网站管理</span></span>}>*/}
-                        {/*{BANNER_EDIT && <Menu.Item key={CTYPE.link.ws_banners.key}><Link*/}
-                            {/*to={CTYPE.link.ws_banners.path}>{CTYPE.link.ws_banners.txt}</Link></Menu.Item>}*/}
-                        {/*{PARTNER_EDIT && <Menu.Item key={CTYPE.link.ws_partners.key}><Link*/}
-                            {/*to={CTYPE.link.ws_partners.path}>{CTYPE.link.ws_partners.txt}</Link></Menu.Item>}*/}
-                        {/*{ARTICLE_EDIT && <Menu.Item key={CTYPE.link.ws_articles.key}><Link*/}
-                            {/*to={CTYPE.link.ws_articles.path}>{CTYPE.link.ws_articles.txt}</Link></Menu.Item>}*/}
-                        {/*{QA_EDIT && <Menu.Item key={CTYPE.link.ws_qa_templates.key}><Link*/}
-                            {/*to={CTYPE.link.ws_qa_templates.path}>{CTYPE.link.ws_qa_templates.txt}</Link></Menu.Item>}*/}
-                        {/*{TRAINING_PROJECT_EDIT && <Menu.Item key={CTYPE.link.ws_training_projects.key}><Link*/}
-                            {/*to={CTYPE.link.ws_training_projects.path}>{CTYPE.link.ws_training_projects.txt}</Link></Menu.Item>}*/}
-                        {/*{JOB_EDIT && <Menu.Item key={CTYPE.link.ws_jobs.key}><Link*/}
-                            {/*to={CTYPE.link.ws_jobs.path}>{CTYPE.link.ws_jobs.txt}</Link></Menu.Item>}*/}
-                        {/*{FAQ_EDIT && <Menu.Item key={CTYPE.link.ws_faqs.key}><Link*/}
-                            {/*to={CTYPE.link.ws_faqs.path}>{CTYPE.link.ws_faqs.txt}</Link></Menu.Item>}*/}
+                    {/*title={<span><Icon type="copy"/><span className="nav-text">网站管理</span></span>}>*/}
+                    {/*{BANNER_EDIT && <Menu.Item key={CTYPE.link.ws_banners.key}><Link*/}
+                    {/*to={CTYPE.link.ws_banners.path}>{CTYPE.link.ws_banners.txt}</Link></Menu.Item>}*/}
+                    {/*{PARTNER_EDIT && <Menu.Item key={CTYPE.link.ws_partners.key}><Link*/}
+                    {/*to={CTYPE.link.ws_partners.path}>{CTYPE.link.ws_partners.txt}</Link></Menu.Item>}*/}
+                    {/*{ARTICLE_EDIT && <Menu.Item key={CTYPE.link.ws_articles.key}><Link*/}
+                    {/*to={CTYPE.link.ws_articles.path}>{CTYPE.link.ws_articles.txt}</Link></Menu.Item>}*/}
+                    {/*{QA_EDIT && <Menu.Item key={CTYPE.link.ws_qa_templates.key}><Link*/}
+                    {/*to={CTYPE.link.ws_qa_templates.path}>{CTYPE.link.ws_qa_templates.txt}</Link></Menu.Item>}*/}
+                    {/*{TRAINING_PROJECT_EDIT && <Menu.Item key={CTYPE.link.ws_training_projects.key}><Link*/}
+                    {/*to={CTYPE.link.ws_training_projects.path}>{CTYPE.link.ws_training_projects.txt}</Link></Menu.Item>}*/}
+                    {/*{JOB_EDIT && <Menu.Item key={CTYPE.link.ws_jobs.key}><Link*/}
+                    {/*to={CTYPE.link.ws_jobs.path}>{CTYPE.link.ws_jobs.txt}</Link></Menu.Item>}*/}
+                    {/*{FAQ_EDIT && <Menu.Item key={CTYPE.link.ws_faqs.key}><Link*/}
+                    {/*to={CTYPE.link.ws_faqs.path}>{CTYPE.link.ws_faqs.txt}</Link></Menu.Item>}*/}
                     {/*</SubMenu>}*/}
 
                     <SubMenu key='/app/admin'
-                                            title={<span><Icon type="usergroup-add"/><span
-                                                className="nav-text">管理&权限</span></span>}>
+                             title={<span><Icon type="usergroup-add"/><span
+                                 className="nav-text">管理&权限</span></span>}>
                         <Menu.Item key={CTYPE.link.admin_admins.key}><Link
                             to={CTYPE.link.admin_admins.path}>{CTYPE.link.admin_admins.txt}</Link></Menu.Item>
                         <Menu.Item key={CTYPE.link.admin_roles.key}><Link

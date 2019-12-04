@@ -11,8 +11,6 @@ import {
     Icon,
     Radio,
     Checkbox,
-    Row,
-    Col,
     Rate
 } from 'antd';
 import {Link} from 'react-router-dom';
@@ -21,12 +19,16 @@ import {CTYPE, U} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom"
 
 const Option = Select.Option;
-
 const {TreeNode} = TreeSelect;
 
 let id = 0;
 
 const ABC = ['A', 'B', 'C', 'D', 'E'];
+const JUDGE = [{type: 1, label: '对'}, {type: 2, label: '错'}];
+const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'}, {
+    type: 4,
+    label: '填空'
+}, {type: 5, label: '问答'}];
 
 class QuestionEdit extends React.Component {
 
@@ -39,12 +41,11 @@ class QuestionEdit extends React.Component {
             tag: [],
             ids: [],
             list: [],
-            add: 1,
             options: [],
-            disappear: 1,
-            display: 5,
-            keys: []
-
+            // disappear: 1,
+            // display: 5,
+            keys: [],
+            // add: 1,
         }
     }
 
@@ -58,11 +59,9 @@ class QuestionEdit extends React.Component {
             App.api('/oms/question/question', {id}).then((question) => {
                     let {tagsId = []} = question;
                     this.setState({question, ids: tagsId});
-                    let {keys} = this.state;
                     this.setState({display: question.type});
                     if (question.type === 1 || question.type === 2) {
                         this.setState({add: 2, disappear: 1, display: question.type, keys: question.options});
-                        console.log(keys);
                     } else {
                         this.setState({add: 1, disappear: 2, display: 5})
                     }
@@ -93,26 +92,25 @@ class QuestionEdit extends React.Component {
             categoryId,
             answer,
             difficulty,
-            options,
+            options
         });
     };
 
     handleChange = ids => {
-        console.log(ids);
         this.setState({ids});
     };
 
     handleSubmit = () => {
+        let {type, difficulty, status} = this.state;
         this.props.form.validateFields((err, values) => {
             let {options} = values;
             let {question = {}, ids = []} = this.state;
-            // if (U.str.isEmpty(type)) {
-            //     question.type = "单选"
-            // }
-            // if (U.str.isEmpty(difficulty)) {
-            //     question.difficulty = "简单"
-            // }
-            console.log(question);
+            if (U.str.isEmpty(difficulty)) {
+                question.difficulty = "1"
+            }
+            if (U.str.isEmpty(status)) {
+                question.status = "1"
+            }
             App.api('/oms/question/save', {
                 'question': JSON.stringify({
                     ...question,
@@ -129,25 +127,23 @@ class QuestionEdit extends React.Component {
     };
 
     remove = k => {
-        const {form} = this.props;
-        const keys = form.getFieldValue('keys');
+        let {keys = []} = this.state;
         if (keys.length === 1) {
             return;
         }
-        form.setFieldsValue({
+        this.setState({
             keys: keys.filter(key => key !== k),
         });
     };
 
     add = () => {
-        const {form} = this.props;
-        const keys = form.getFieldValue('keys');
+        let {keys = []} = this.state;
         if (keys.length > 4) {
             message.warn('最多5个');
             return;
         }
         const nextKeys = keys.concat(id++);
-        form.setFieldsValue({
+        this.setState({
             keys: nextKeys,
         });
     };
@@ -175,13 +171,9 @@ class QuestionEdit extends React.Component {
                         },
                     ],
                 })(<Input placeholder="请添加选项" style={{width: '75%', marginRight: 8}}
-                          addonBefore={ABC[index]} addonAfter={<Icon type="setting"/>}/>)}
-                {keys.length > 1 ? (
-                    <Icon
-                        type="minus-circle-o"
-                        onClick={() => this.remove(k)}
-                    />
-                ) : null}
+                          addonBefore={ABC[index]}
+                          addonAfter={<Icon type="minus-circle-o" onClick={() => this.remove(k)}
+                          />}/>)}
             </Form.Item>
         ));
 
@@ -197,6 +189,16 @@ class QuestionEdit extends React.Component {
                                }}
                                htmlType="submit">提交</Button>}
                 style={CTYPE.formStyle}>
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="难度">
+                    <Rate style={{fontSize: 14}} count={3} value={difficulty} onChange={(e) => {
+                        this.setState({
+                            question: {
+                                ...question,
+                                difficulty: e
+                            }
+                        })
+                    }}/>
+                </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="分类">
                     <TreeSelect
                         // showSearch
@@ -256,30 +258,14 @@ class QuestionEdit extends React.Component {
                                     type: e
                                 }
                             });
-                            if (e === 1 || e === 2) {
-                                this.setState({add: 2, disappear: 1, display: e});
-                            } else {
-                                this.setState({add: 1, disappear: 2, display: 5})
-                            }
                         }}>
-                        <Option value={1}>单选</Option>
-                        <Option value={2}>多选</Option>
-                        <Option value={3}>填空</Option>
-                        <Option value={4}>问答</Option>
+                        {OPTIONS.map((k, index) => {
+                            return <Option value={k.type} key={OPTIONS}>{k.label}</Option>
+                        })}
                     </Select>
                 </Form.Item>
-                <Form.Item {...CTYPE.formItemLayout} required="true" label="难度">
-                    <Rate count={3} value={difficulty} onChange={(e) => {
-                        this.setState({
-                            question: {
-                                ...question,
-                                difficulty: e
-                            }
-                        })
-                    }}/>
-                </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} label="题目" required="true" className="common-edit-page">
-                    <Input.TextArea rows={3} value={topic} onChange={(e) => {
+                    <Input.TextArea rows={3} style={{width: "270px"}} value={topic} onChange={(e) => {
                         this.setState({
                             question: {
                                 ...question,
@@ -288,7 +274,7 @@ class QuestionEdit extends React.Component {
                         })
                     }}/>
                 </Form.Item>
-                {add === 2 && <React.Fragment>
+                {(type === 1 || type === 2) && <React.Fragment>
                     {formItems}
                     <Form.Item {...CTYPE.tailFormItemLayout} >
                         <Button type="dashed" onClick={this.add} style={{width: '60%'}}>
@@ -296,7 +282,7 @@ class QuestionEdit extends React.Component {
                         </Button>
                     </Form.Item>
                 </React.Fragment>}
-                {display === 1 &&
+                {type === 1 &&
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="答案">
                     <Radio.Group value={answer} onChange={(e) => {
                         this.setState({
@@ -311,10 +297,9 @@ class QuestionEdit extends React.Component {
                         })}
                     </Radio.Group>
                 </Form.Item>}
-                {display === 2 &&
+                {type === 2 &&
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="答案">
                     <Checkbox.Group style={{width: '100%'}} value={answer} onChange={(vs) => {
-                        console.log(vs);
                         this.setState({
                             question: {
                                 ...question,
@@ -325,10 +310,24 @@ class QuestionEdit extends React.Component {
                         {keys.map((k, index) => {
                             return <Checkbox value={ABC[index]} key={index}>{ABC[index]}</Checkbox>
                         })}
-
                     </Checkbox.Group>
                 </Form.Item>}
-                {disappear === 2 &&
+                {type === 3 &&
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="答案">
+                    <Radio.Group value={answer} onChange={(e) => {
+                        this.setState({
+                            question: {
+                                ...question,
+                                answer: e.target.value
+                            }
+                        })
+                    }}>
+                        {JUDGE.map((k, index) => {
+                            return <Radio value={k.type} key={JUDGE}>{k.label}</Radio>
+                        })}
+                    </Radio.Group>
+                </Form.Item>}
+                {(type === 4 || type === 5) &&
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="答案">
                     <Input.TextArea rows={3} value={answer} onChange={(e) => {
                         this.setState({

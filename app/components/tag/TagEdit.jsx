@@ -39,7 +39,7 @@ export default class TagEdit extends React.Component {
 
         let {name} = tag;
 
-        return <Modal title={'新建分类'}
+        return <Modal title={'新建标签'}
                       getContainer={() => Utils.common.createModalContainer(id_div)}
                       visible={true}
                       width={'600px'}

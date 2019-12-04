@@ -57,7 +57,7 @@ class Login extends React.Component {
                         message.warning(err[key].errors[0].message);
                     });
                 } else {
-                    App.api('/admin/signIn', {
+                    App.api('/oms/admin/signIn', {
                             admin: JSON.stringify(admin)
                         }
                     ).then((result) => {
