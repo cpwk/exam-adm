@@ -1,17 +1,7 @@
 import React from 'react';
 import {
-    message,
-    Card,
-    Input,
-    Form,
-    Button,
-    Select,
-    Switch,
-    TreeSelect,
-    Icon,
-    Radio,
-    Checkbox,
-    Rate
+    message, Card, Input, Form, Button, Select, Switch, TreeSelect,
+    Icon, Radio, Checkbox, Rate
 } from 'antd';
 import {Link} from 'react-router-dom';
 import App from '../../common/App.jsx';
@@ -24,11 +14,9 @@ const {TreeNode} = TreeSelect;
 let id = 0;
 
 const ABC = ['A', 'B', 'C', 'D', 'E'];
-const JUDGE = [{type: 1, label: '对'}, {type: 2, label: '错'}];
-const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'}, {
-    type: 4,
-    label: '填空'
-}, {type: 5, label: '问答'}];
+const JUDGE = [{answer: "1", label: '对'}, {answer: "2", label: '错'}];
+const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
+    {type: 4, label: '填空'}, {type: 5, label: '问答'}];
 
 class QuestionEdit extends React.Component {
 
@@ -42,10 +30,7 @@ class QuestionEdit extends React.Component {
             ids: [],
             list: [],
             options: [],
-            // disappear: 1,
-            // display: 5,
             keys: [],
-            // add: 1,
         }
     }
 
@@ -79,9 +64,7 @@ class QuestionEdit extends React.Component {
                     loading: false,
                 });
             });
-
     };
-
 
     setForm = (question) => {
         let {topic, type, tagsId, categoryId, answer, difficulty, options} = question;
@@ -101,13 +84,13 @@ class QuestionEdit extends React.Component {
     };
 
     handleSubmit = () => {
-        let {type, difficulty, status} = this.state;
+        let {difficulty, status} = this.state;
         this.props.form.validateFields((err, values) => {
             let {options} = values;
             let {question = {}, ids = []} = this.state;
-            if (U.str.isEmpty(difficulty)) {
-                question.difficulty = "1"
-            }
+            // if (U.str.isEmpty(difficulty)) {
+            //     question.difficulty = "1"
+            // }
             if (U.str.isEmpty(status)) {
                 question.status = "1"
             }
@@ -122,8 +105,6 @@ class QuestionEdit extends React.Component {
                 window.history.back();
             });
         })
-
-
     };
 
     remove = k => {
@@ -150,7 +131,7 @@ class QuestionEdit extends React.Component {
 
     render() {
 
-        let {question = {}, tag = [], ids = [], list = [], add, disappear, display, keys = []} = this.state;
+        let {question = {}, tag = [], ids = [], list = [], keys = []} = this.state;
         let {topic, categoryId, answer, status, type, difficulty} = question;
 
         const {getFieldDecorator} = this.props.form;
@@ -190,11 +171,11 @@ class QuestionEdit extends React.Component {
                                htmlType="submit">提交</Button>}
                 style={CTYPE.formStyle}>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="难度">
-                    <Rate style={{fontSize: 14}} count={3} value={difficulty} onChange={(e) => {
+                    <Rate style={{fontSize: 14}} count={3} value={difficulty} onChange={(difficulty) => {
                         this.setState({
                             question: {
                                 ...question,
-                                difficulty: e
+                                difficulty
                             }
                         })
                     }}/>
@@ -265,7 +246,7 @@ class QuestionEdit extends React.Component {
                     </Select>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} label="题目" required="true" className="common-edit-page">
-                    <Input.TextArea rows={3} style={{width: "270px"}} value={topic} onChange={(e) => {
+                    <Input.TextArea rows={3} value={topic} onChange={(e) => {
                         this.setState({
                             question: {
                                 ...question,
@@ -278,7 +259,7 @@ class QuestionEdit extends React.Component {
                     {formItems}
                     <Form.Item {...CTYPE.tailFormItemLayout} >
                         <Button type="dashed" onClick={this.add} style={{width: '60%'}}>
-                            <Icon type="plus"/> 点击添加题目选项
+                            <Icon type="plus"/> 点击添加选项
                         </Button>
                     </Form.Item>
                 </React.Fragment>}
@@ -323,7 +304,7 @@ class QuestionEdit extends React.Component {
                         })
                     }}>
                         {JUDGE.map((k, index) => {
-                            return <Radio value={k.type} key={JUDGE}>{k.label}</Radio>
+                            return <Radio value={k.answer} key={JUDGE}>{k.label}</Radio>
                         })}
                     </Radio.Group>
                 </Form.Item>}
@@ -338,8 +319,8 @@ class QuestionEdit extends React.Component {
                         })
                     }}/>
                 </Form.Item>}
-                <Form.Item {...CTYPE.formItemLayout} required="true" label="启用">
-                    <Switch checked={status === 1} onChange={(chk) => {
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
+                    <Switch checkedChildren="启用" unCheckedChildren="停用" checked={status === 1} onChange={(chk) => {
                         this.setState({
                             question: {
                                 ...question,

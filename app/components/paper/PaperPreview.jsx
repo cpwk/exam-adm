@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import App from "../../common/App";
-import {CTYPE} from "../../common";
+import {CTYPE, Utils} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom";
 import Link from "react-router-dom/Link";
-import {Button, Card, Radio, Input, Checkbox} from "antd";
+import {Card, Radio, Input, Checkbox} from "antd";
 import "../../assets/css/template/TemplatePreview.less"
 
 const DIFFICULTY = [{difficulty: 1, label: '简单'}, {difficulty: 2, label: '一般'}, {difficulty: 3, label: '困难'}];
@@ -12,20 +12,13 @@ const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 
 const JUDGE = [{answer: "1", label: '对'}, {answer: "2", label: '错'}];
 
 
-class TemplatePreview extends Component {
+class PaperPreview extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             id: parseInt(this.props.match.params.id),
-            uploading: false,
-            template: {},
-            list: [],
-            pagination: {
-                pageSize: CTYPE.pagination.pageSize,
-                current: 1,
-                total: 0,
-            },
+            paper: {}
         }
     }
 
@@ -36,52 +29,45 @@ class TemplatePreview extends Component {
     loadData = () => {
         let {id} = this.state;
         if (id > 0) {
-            App.api('/oms/template/template_id', {id}).then((template) => {
-                    this.setState({template: template});
-                    this.setForm(template);
+            App.api('/oms/paper/preview', {id}).then((paper) => {
+                    this.setState({paper: paper});
+                    this.setForm(paper);
                 }
             );
-            App.api('/oms/template/create', {id}).then((list) => {
-                this.setState({list: list})
-            })
         }
     };
 
-    setForm = (template) => {
-        let {templateName, content, status, difficulty, category, duration, passingScore} = template;
+    setForm = (paper) => {
+        let {name, questions, status, totalScore, duration, templateId, passingScore} = paper;
         this.props.form.setFieldsValue({
-            ...template,
-            difficulty,
-            templateName,
-            content,
+            ...paper,
+            templateId,
+            questions,
+            name,
             status,
-            category,
+            totalScore,
             duration,
             passingScore
         });
     };
 
     render() {
-        let {template, list = []} = this.state;
-        let {templateName, duration, totalScore, difficulty, passingScore} = template;
+        let {paper} = this.state;
+        let {name, duration, totalScore, passingScore} = paper;
+        console.log(duration);
+        // let {templateName, content, status, difficulty, category, duration, passingScore} = template;
 
-        OPTIONS.map((k, index) => {
-            return <Input value={k.type} key={OPTIONS}>{k.label}</Input>
-        });
+        let {questions = []} = paper;
 
         return <div>
             <Card
                 title={<BreadcrumbCustom
                     first={<Link to={CTYPE.link.template.path}>{CTYPE.link.template.txt}</Link>}
                     second='模板预览'/>}
-                extra={<Button type="primary"
-                               onClick={() => {
-                                   this.create()
-                               }}
-                               htmlType="submit">生成试卷</Button>}>
+            >
                 <div className="paper">
                     <div className="paper-name">
-                        <h1>{templateName}</h1>
+                        <h1>{name}</h1>
                     </div>
                     <div className="paper-standard">
                         <ul>
@@ -91,7 +77,7 @@ class TemplatePreview extends Component {
                         </ul>
                     </div>
                     <div className="paper-content">
-                        {list.map((k, index) => {
+                        {questions.map((k, index) => {
                             return <div>
                                 <ul>
                                     <li>
@@ -104,26 +90,15 @@ class TemplatePreview extends Component {
                                                     return k.type === 1 ? <Radio>{obj}</Radio> : k.type === 2 ?
                                                         <Checkbox>{obj}</Checkbox> :
                                                         <li>
-                                                        {JUDGE.map((k, index) => {
-                                                                return <Radio value={k.answer} key={JUDGE}>{k.label}</Radio>
+                                                            {JUDGE.map((k, index) => {
+                                                                return <Radio value={k.answer}
+                                                                              key={JUDGE}>{k.label}</Radio>
                                                             })}
                                                         </li>
                                                 })}
                                             </li>
                                         </li>}
                                     </li>
-                                    {/*<li>*/}
-                                    {/*    {k.type === 3 &&*/}
-                                    {/*    <li>*/}
-                                    {/*        {k.type === 3 &&*/}
-                                    {/*        index + (":") + (`${k.type}`) + k.topic}*/}
-                                    {/*        <li>*/}
-                                    {/*            {JUDGE.map((k, index) => {*/}
-                                    {/*                return <Radio value={k.answer} key={JUDGE}>{k.label}</Radio>*/}
-                                    {/*            })}*/}
-                                    {/*        </li>*/}
-                                    {/*    </li>}*/}
-                                    {/*</li>*/}
                                     <li>
                                         {(k.type === 4 || k.type === 5) &&
                                         <li>
@@ -144,4 +119,4 @@ class TemplatePreview extends Component {
     }
 }
 
-export default TemplatePreview;
+export default PaperPreview;

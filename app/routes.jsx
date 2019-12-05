@@ -18,6 +18,7 @@ import UserInfo from "./components/user/UserInfo";
 import Paper from "./components/paper/Paper";
 import PaperEdit from "./components/paper/PaperEdit";
 import TemplatePreview from "./components/template/TemplatePreview";
+import PaperPreview from "./components/paper/PaperPreview";
 
 
 const routes = (
@@ -49,11 +50,8 @@ const routes = (
                                 <Route path='/app/paper/paper' component={Paper}/>
                                 <Route path='/app/paper/paperEdit/:id' component={PaperEdit}/>
                                 <Route path='/app/user/userInfo' component={UserInfo}/>
-
-
-
+                                <Route path='/app/paper/paperPreview/:id' component={PaperPreview}/>
                                 <Route path='/app/category/categoryx' component={Categoryx}/>
-
                             </Index>
                         )}/>
 

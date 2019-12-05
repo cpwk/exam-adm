@@ -193,8 +193,9 @@ export default class Question extends React.Component {
                             return <div className="state">
                                 {t.type === 1 && <span>单选</span>}
                                 {t.type === 2 && <span>多选</span>}
-                                {t.type === 3 && <span>填空</span>}
-                                {t.type === 4 && <span>问答</span>}
+                                {t.type === 3 && <span>判断</span>}
+                                {t.type === 4 && <span>填空</span>}
+                                {t.type === 5 && <span>问答</span>}
                             </div>
                         }
                     }, {
@@ -219,7 +220,7 @@ export default class Question extends React.Component {
                             </div>
                         }
                     }, {
-                        title: '启用',
+                        title: '状态',
                         dataIndex: 'c-status',
                         className: 'txt-center',
                         width: '100px',

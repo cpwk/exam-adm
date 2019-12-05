@@ -61,7 +61,7 @@ class PaperEdit extends React.Component {
     render() {
 
         let {paper, template = []} = this.state;
-        let {name, templateId, passingScore, totalScore, duration, status} = paper;
+        let {name, status} = paper;
 
         return <div>
             <Card
@@ -86,20 +86,14 @@ class PaperEdit extends React.Component {
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="模板选择">
                     <Select placeholder="全部模板" style={{width: 290}} onSelect={(value) => {
-                        console.log(template);
+                        let _template = template.find((item) => item.id === value);
                         this.setState({
                             paper: {
                                 ...paper,
                                 templateId: value,
-                                totalScore: template.find((item) =>
-                                    item.id === value
-                                ).totalScore,
-                                passingScore: template.find((item) =>
-                                    item.id === value
-                                ).passingScore,
-                                duration: template.find((item) =>
-                                    item.id === value
-                                ).duration
+                                passingScore: _template.passingScore,
+                                duration: _template.duration,
+                                totalScore: _template.totalScore
                             }
                         })
                     }}>
@@ -117,8 +111,8 @@ class PaperEdit extends React.Component {
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="及格分数">
                     <Input style={{width: '290px'}} value={paper.passingScore}/>
                 </Form.Item>
-                <Form.Item {...CTYPE.formItemLayout} required="true" label="启用">
-                    <Switch checked={status === 1} onChange={(chk) => {
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
+                    <Switch checkedChildren="上架" unCheckedChildren="下架" checked={status === 1} onChange={(chk) => {
                         this.setState({
                             paper: {
                                 ...paper,

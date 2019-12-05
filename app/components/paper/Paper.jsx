@@ -51,11 +51,14 @@ class Paper extends Component {
         App.go(`/app/paper/paperEdit/${paper.id}`)
     };
 
+    preview = paper => {
+        App.go(`/app/paper/paperPreview/${paper.id}`)
+    };
+
     render() {
 
         let {paper = [], loading, pagination} = this.state;
 
-        console.log(paper);
         return <div>
 
             <BreadcrumbCustom first={CTYPE.link.paper.txt}/>
@@ -95,7 +98,7 @@ class Paper extends Component {
                         dataIndex: 'passingScore',
                         className: 'txt-center',
                     }, {
-                        title: '启用',
+                        title: '状态',
                         dataIndex: 'c-status',
                         className: 'txt-center',
                         render: (obj, c) => {
@@ -122,7 +125,7 @@ class Paper extends Component {
                                     <a onClick={() => this.edit(item)}>编辑</a>
                                 </Menu.Item>
                                 <Menu.Item key="2">
-                                    <a onClick={() => this.edit(item)}>预览</a>
+                                    <a onClick={() => this.preview(item)}>预览</a>
                                 </Menu.Item>
                                 <Menu.Item key="3">
                                     <a onClick={() => this.remove(item.id, index)}>下架</a>

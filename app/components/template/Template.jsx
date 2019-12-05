@@ -136,6 +136,11 @@ class Template extends Component {
                         title: '名称',
                         dataIndex: 'templateName',
                         className: 'txt-center'
+                    },{
+                        title: '分类',
+                        dataIndex: 'categoryName.name',
+                        className: 'txt-center',
+                        ellipsis: true,
                     }, {
                         title: '难度',
                         dataIndex: 'd-difficulty',
@@ -143,17 +148,6 @@ class Template extends Component {
                         render: (ob, d) => {
                             return <div className="state">
                                 <Rate style={{fontSize: 14}} disabled count={d.difficulty} defaultValue={d.difficulty}/>
-                            </div>
-                        }
-                    }, {
-                        title: '详情',
-                        dataIndex: 'content',
-                        className: 'txt-center',
-                        render: (obj, item) => {
-                            return <div className="state">
-                                <a onClick={() => {
-                                    this.details(item);
-                                }}>查看</a>
                             </div>
                         }
                     }, {
@@ -171,6 +165,17 @@ class Template extends Component {
                         render: (duration) => {
                             return <div>
                                 {<span>{duration + "/分钟"}</span>}
+                            </div>
+                        }
+                    }, {
+                        title: '详情',
+                        dataIndex: 'content',
+                        className: 'txt-center',
+                        render: (obj, item) => {
+                            return <div className="state">
+                                <a onClick={() => {
+                                    this.details(item);
+                                }}>查看</a>
                             </div>
                         }
                     }, {

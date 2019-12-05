@@ -108,7 +108,7 @@ export default class Category extends React.Component {
                             return U.date.format(new Date(updatedAt), 'yyyy-MM-dd/HH:mm');
                         }
                     }, {
-                        title: '启用',
+                        title: "状态",
                         dataIndex: 'c-status',
                         className: 'txt-center',
                         width: '100px',

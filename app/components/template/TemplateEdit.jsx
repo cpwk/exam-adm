@@ -8,6 +8,10 @@ import App from "../../common/App";
 const {TreeNode} = TreeSelect;
 const {Option} = Select;
 
+
+const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
+    {type: 4, label: '填空'}, {type: 5, label: '问答'}];
+
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
@@ -189,13 +193,13 @@ class TemplateEdit extends Component {
                                     ...template,
                                     content
                                 }
-                                // 6258 0218 7388 0373
+                            }, () => {
+                                this.calc()
                             });
                         }}>
-                        <Option value={1}>单选</Option>
-                        <Option value={2}>多选</Option>
-                        <Option value={3}>填空</Option>
-                        <Option value={4}>问答</Option>
+                        {OPTIONS.map((k, index) => {
+                            return <Option value={k.type} key={OPTIONS}>{k.label}</Option>
+                        })}
                     </Select>
                 </Form.Item>
                 {content.map((detail, index) => {
@@ -204,7 +208,7 @@ class TemplateEdit extends Component {
                         <Form.Item {...CTYPE.formItemLayout} required="true" label="题型">
                             <span
                                 key={index}
-                                style={{marginRight: '5px'}}>{type === 1 ? '单选' : type === 2 ? '多选' : type === 3 ? '填空' : '问答'}题</span>
+                                style={{marginRight: '5px'}}>{type === 1 ? '单选' : type === 2 ? '多选' : type === 3 ? '判断' : type === 4 ? '填空' : '问答'}题</span>
                             <InputNumber min={0} value={number} style={{width: '70px'}} onChange={(value) => {
                                 content[index].number = value;
                                 this.setState({
@@ -241,7 +245,7 @@ class TemplateEdit extends Component {
                             }
                         })
                     }}/>
-                    <span style={{marginLeft:"10px"}}>分钟</span>
+                    <span style={{marginLeft: "10px"}}>分钟</span>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="总分">
                     <Input min={0} disabled={true} style={{width: '80px'}} value={totalScore}/>
@@ -256,7 +260,7 @@ class TemplateEdit extends Component {
                         })
                     }}/>
                 </Form.Item>
-                <Form.Item {...CTYPE.formItemLayout} required="true" label="启用">
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
                     <Switch checkedChildren="启用" unCheckedChildren="停用" checked={status === 1} onChange={(chk) => {
                         this.setState({
                             template: {

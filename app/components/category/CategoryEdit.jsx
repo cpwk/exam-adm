@@ -87,8 +87,8 @@ export default class CategoryEdit extends React.Component {
                             })
                         }}/>
                 </Form.Item>
-                <Form.Item {...CTYPE.formItemLayout} required="true" label="启用">
-                    <Switch checked={status === 1} onChange={(chk) => {
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
+                    <Switch checkedChildren="启用" unCheckedChildren="停用" checked={status === 1} onChange={(chk) => {
                         this.setState({
                             category: {
                                 ...category,
