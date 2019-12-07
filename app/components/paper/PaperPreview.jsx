@@ -3,14 +3,13 @@ import App from "../../common/App";
 import {CTYPE, Utils} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom";
 import Link from "react-router-dom/Link";
-import {Card, Radio, Input, Checkbox} from "antd";
+import {Card, Radio, Input, Checkbox, Select} from "antd";
 import "../../assets/css/template/TemplatePreview.less"
 
-const DIFFICULTY = [{difficulty: 1, label: '简单'}, {difficulty: 2, label: '一般'}, {difficulty: 3, label: '困难'}];
-const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
-    {type: 4, label: '填空'}, {type: 5, label: '问答'}];
+const OPTIONS = ['单选题', '多选题', '判断题', '填空题', '问答题'];
 const JUDGE = [{answer: "1", label: '对'}, {answer: "2", label: '错'}];
-
+const ABC = ['A', 'B', 'C', 'D', 'E'];
+const {Option} = Select;
 
 class PaperPreview extends Component {
 
@@ -54,16 +53,17 @@ class PaperPreview extends Component {
     render() {
         let {paper} = this.state;
         let {name, duration, totalScore, passingScore} = paper;
-        console.log(duration);
-        // let {templateName, content, status, difficulty, category, duration, passingScore} = template;
-
         let {questions = []} = paper;
+
+        OPTIONS.map((o, index) => {
+            return <Option value={o.type} key={OPTIONS}>{o.label}</Option>
+        });
 
         return <div>
             <Card
                 title={<BreadcrumbCustom
                     first={<Link to={CTYPE.link.template.path}>{CTYPE.link.template.txt}</Link>}
-                    second='模板预览'/>}
+                    second='试卷预览'/>}
             >
                 <div className="paper">
                     <div className="paper-name">
@@ -81,20 +81,28 @@ class PaperPreview extends Component {
                             return <div>
                                 <ul>
                                     <li>
-                                        {(k.type === 1 || k.type === 2 || k.type === 3) &&
+                                        {(k.type === 1 || k.type === 2) &&
                                         <li>
-                                            {(k.type === 1 || k.type === 2 || k.type === 3) &&
-                                            index + (":") + (`${k.type}`) + k.topic}
+                                            {(k.type === 1 || k.type === 2) &&
+                                            index + 1 + (":") + "(" + OPTIONS[`${k.type - 1}`] + ")" + k.topic}
+
                                             <li>
-                                                {k.type === 3 ? null : k.options.map((obj, i) => {
-                                                    return k.type === 1 ? <Radio>{obj}</Radio> : k.type === 2 ?
-                                                        <Checkbox>{obj}</Checkbox> :
-                                                        <li>
-                                                            {JUDGE.map((k, index) => {
-                                                                return <Radio value={k.answer}
-                                                                              key={JUDGE}>{k.label}</Radio>
-                                                            })}
-                                                        </li>
+                                                {k.options.map((obj, i) => {
+                                                    return k.type === 1 ? <li>{ABC[i]}.{obj}</li> :
+                                                        <li>{ABC[i]}.{obj}</li>
+                                                })}
+                                            </li>
+                                        </li>}
+                                    </li>
+                                    <li>
+                                        {k.type === 3 &&
+                                        <li>
+                                            {k.type === 3 &&
+                                            index + 1 + (":") + "(" + OPTIONS[`${k.type - 1}`] + ")"}
+                                            <li dangerouslySetInnerHTML={{__html: k.topic}}/>
+                                            <li>
+                                                {JUDGE.map((k, index) => {
+                                                    return <li>{k.answer}.{k.label}</li>
                                                 })}
                                             </li>
                                         </li>}
@@ -103,9 +111,9 @@ class PaperPreview extends Component {
                                         {(k.type === 4 || k.type === 5) &&
                                         <li>
                                             {(k.type === 4 || k.type === 5) &&
-                                            index + (":") + (`${k.type}`) + k.topic}
+                                            index + 1 + (":") + "(" + OPTIONS[`${k.type - 1}`] + ")" + k.topic}
                                             <li>
-                                                <Input/>
+                                                答：
                                             </li>
                                         </li>}
                                     </li>

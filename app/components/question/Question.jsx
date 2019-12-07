@@ -179,7 +179,6 @@ export default class Question extends React.Component {
                         title: '分类',
                         dataIndex: 'categoryName.name',
                         className: 'txt-center',
-                        ellipsis: true,
                     }, {
                         title: '题目',
                         dataIndex: 'topic',
@@ -191,11 +190,8 @@ export default class Question extends React.Component {
                         className: 'txt-center',
                         render: (ob, t) => {
                             return <div className="state">
-                                {t.type === 1 && <span>单选</span>}
-                                {t.type === 2 && <span>多选</span>}
-                                {t.type === 3 && <span>判断</span>}
-                                {t.type === 4 && <span>填空</span>}
-                                {t.type === 5 && <span>问答</span>}
+                                {t.type === 1 ? <span>单选</span> : t.type === 2 ? <span>多选</span> : t.type === 3 ?
+                                    <span>判断</span> : t.type === 4 ? <span>填空</span> : <span>问答</span>}
                             </div>
                         }
                     }, {
@@ -204,7 +200,7 @@ export default class Question extends React.Component {
                         className: 'txt-center',
                         render: (ob, d) => {
                             return <div className="state">
-                                    <Rate style={{fontSize:14}} disabled count={d.difficulty} defaultValue={d.difficulty}/>
+                                <Rate style={{fontSize: 14}} disabled count={d.difficulty} defaultValue={d.difficulty}/>
                             </div>
                         }
                     }, {

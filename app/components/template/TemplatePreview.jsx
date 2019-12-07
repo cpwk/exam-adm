@@ -98,16 +98,11 @@ class TemplatePreview extends Component {
                                         {(k.type === 1 || k.type === 2 || k.type === 3) &&
                                         <li>
                                             {(k.type === 1 || k.type === 2 || k.type === 3) &&
-                                            index + (":") + (`${k.type}`) + k.topic}
+                                            index+1 + (":") + (`${k.type}`) + k.topic}
                                             <li>
                                                 {k.type === 3 ? null : k.options.map((obj, i) => {
-                                                    return k.type === 1 ? <Radio>{obj}</Radio> : k.type === 2 ?
-                                                        <Checkbox>{obj}</Checkbox> :
-                                                        <li>
-                                                        {JUDGE.map((k, index) => {
-                                                                return <Radio value={k.answer} key={JUDGE}>{k.label}</Radio>
-                                                            })}
-                                                        </li>
+                                                    return k.type === 1 ? <Radio>{obj}</Radio> :
+                                                        <Checkbox>{obj}</Checkbox>
                                                 })}
                                             </li>
                                         </li>}
@@ -128,7 +123,7 @@ class TemplatePreview extends Component {
                                         {(k.type === 4 || k.type === 5) &&
                                         <li>
                                             {(k.type === 4 || k.type === 5) &&
-                                            index + (":") + (`${k.type}`) + k.topic}
+                                            index+1 + (":") + (`${k.type}`) + k.topic}
                                             <li>
                                                 <Input/>
                                             </li>

@@ -49,14 +49,14 @@ class TemplateEdit extends Component {
     };
 
     setForm = (template) => {
-        let {templateName, content, status, difficulty, category, duration, passingScore} = template;
+        let {templateName, content, status, difficulty, categoryId, duration, passingScore} = template;
         this.props.form.setFieldsValue({
             ...template,
             difficulty,
             templateName,
             content,
             status,
-            category,
+            categoryId,
             duration,
             passingScore
         });
@@ -96,7 +96,7 @@ class TemplateEdit extends Component {
 
     render() {
         let {list = [], template = {}} = this.state;
-        let {templateName, category, difficulty, status, content = [], totalScore = 0, duration, passingScore} = template;
+        let {templateName, categoryId, difficulty, status, content = [], totalScore = 0, duration, passingScore} = template;
         let checkTypes = [];
         content.map((detail) => {
             checkTypes.push(detail.type);
@@ -137,14 +137,14 @@ class TemplateEdit extends Component {
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="分类">
                     <TreeSelect
                         style={{width: 290}}
-                        value={category}
+                        value={categoryId}
                         dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                         placeholder="请选择分类"
                         onSelect={(value) => {
                             this.setState({
                                 template: {
                                     ...template,
-                                    category: value
+                                    categoryId: value
                                 }
                             })
                         }}>

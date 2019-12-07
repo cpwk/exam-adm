@@ -67,12 +67,12 @@ class PaperEdit extends React.Component {
             <Card
                 title={<BreadcrumbCustom
                     first={<Link to={CTYPE.link.paper.path}>{CTYPE.link.paper.txt}</Link>}
-                    second='编辑试卷'/>}
+                    second='新建试卷'/>}
                 extra={<Button type="primary"
                                onClick={() => {
                                    this.handleSubmit()
                                }}
-                               htmlType="submit">提交</Button>}
+                               htmlType="submit">生成试卷</Button>}
                 style={CTYPE.formStyle}>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="名称">
                     <Input style={{width: '290px'}} value={name} onChange={(e) => {

@@ -7,12 +7,12 @@ import {Link} from 'react-router-dom';
 import App from '../../common/App.jsx';
 import {CTYPE, U} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom"
-
-const Option = Select.Option;
-const {TreeNode} = TreeSelect;
+import HtmlEditor from "../../common/HtmlEditor";
 
 let id = 0;
-
+const Option = Select.Option;
+const {TreeNode} = TreeSelect;
+const desc = ['简单', '一般', '困难'];
 const ABC = ['A', 'B', 'C', 'D', 'E'];
 const JUDGE = [{answer: "1", label: '对'}, {answer: "2", label: '错'}];
 const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
@@ -30,7 +30,7 @@ class QuestionEdit extends React.Component {
             ids: [],
             list: [],
             options: [],
-            keys: [],
+            keys: []
         }
     }
 
@@ -46,9 +46,7 @@ class QuestionEdit extends React.Component {
                     this.setState({question, ids: tagsId});
                     this.setState({display: question.type});
                     if (question.type === 1 || question.type === 2) {
-                        this.setState({add: 2, disappear: 1, display: question.type, keys: question.options});
-                    } else {
-                        this.setState({add: 1, disappear: 2, display: 5})
+                        this.setState({keys: question.options});
                     }
                     this.setForm(question);
                 }
@@ -84,13 +82,10 @@ class QuestionEdit extends React.Component {
     };
 
     handleSubmit = () => {
-        let {difficulty, status} = this.state;
+        let {status} = this.state;
         this.props.form.validateFields((err, values) => {
             let {options} = values;
             let {question = {}, ids = []} = this.state;
-            // if (U.str.isEmpty(difficulty)) {
-            //     question.difficulty = "1"
-            // }
             if (U.str.isEmpty(status)) {
                 question.status = "1"
             }
@@ -127,6 +122,16 @@ class QuestionEdit extends React.Component {
         this.setState({
             keys: nextKeys,
         });
+    };
+
+    syncContent = (topic) => {
+        let {question = {}} = this.state;
+        this.setState({
+            question: {
+                ...question,
+                topic
+            }
+        })
     };
 
     render() {
@@ -171,14 +176,14 @@ class QuestionEdit extends React.Component {
                                htmlType="submit">提交</Button>}
                 style={CTYPE.formStyle}>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="难度">
-                    <Rate style={{fontSize: 14}} count={3} value={difficulty} onChange={(difficulty) => {
-                        this.setState({
-                            question: {
-                                ...question,
-                                difficulty
-                            }
-                        })
-                    }}/>
+                        <Rate tooltips={desc} style={{fontSize: 14}} count={3} value={difficulty} onChange={(difficulty) => {
+                            this.setState({
+                                question: {
+                                    ...question,
+                                    difficulty
+                                }
+                            })
+                        }}/>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="分类">
                     <TreeSelect
@@ -246,20 +251,13 @@ class QuestionEdit extends React.Component {
                     </Select>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} label="题目" required="true" className="common-edit-page">
-                    <Input.TextArea rows={3} value={topic} onChange={(e) => {
-                        this.setState({
-                            question: {
-                                ...question,
-                                topic: e.target.value
-                            }
-                        })
-                    }}/>
+                    <HtmlEditor content={topic} withoutTools={true} syncContent={this.syncContent}/>
                 </Form.Item>
                 {(type === 1 || type === 2) && <React.Fragment>
                     {formItems}
                     <Form.Item {...CTYPE.tailFormItemLayout} >
                         <Button type="dashed" onClick={this.add} style={{width: '60%'}}>
-                            <Icon type="plus"/> 点击添加选项
+                            <Icon type="plus"/>点击添加选项
                         </Button>
                     </Form.Item>
                 </React.Fragment>}

@@ -59,10 +59,10 @@ class Template extends Component {
 
     remove = (id, index) => {
         Modal.confirm({
-            title: `确认删除此项？`,
+            title: `确认停用此模板？`,
             onOk: () => {
                 App.api("/oms/template/delete", {id}).then(() => {
-                    message.success(`删除成功`);
+                    message.success(`停用成功`);
                     this.loadData();
                 })
             },
@@ -136,9 +136,9 @@ class Template extends Component {
                         title: '名称',
                         dataIndex: 'templateName',
                         className: 'txt-center'
-                    },{
+                    }, {
                         title: '分类',
-                        dataIndex: 'categoryName.name',
+                        dataIndex: 'category.name',
                         className: 'txt-center',
                         ellipsis: true,
                     }, {

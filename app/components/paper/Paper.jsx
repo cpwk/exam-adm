@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {App, CTYPE, U, Utils} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom";
-import {Button, Table, Card, Dropdown, Menu, Icon, Row} from "antd";
+import {Button, Table, Card, Dropdown, Menu, Icon, Row, Modal, message} from "antd";
 
 class Paper extends Component {
 
@@ -53,6 +53,23 @@ class Paper extends Component {
 
     preview = paper => {
         App.go(`/app/paper/paperPreview/${paper.id}`)
+    };
+
+    remove = (id, index) => {
+        Modal.confirm({
+            title: `确认下架此试卷？`,
+            onOk: () => {
+                App.api("/oms/paper/delete", {id}).then(() => {
+                    message.success(`下架成功`);
+                    let paper = this.state.paper;
+                    this.setState({
+                        paper: U.array.remove(paper, index)
+                    })
+                })
+            },
+            onCancel() {
+            }
+        })
     };
 
     render() {
