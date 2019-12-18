@@ -3,7 +3,7 @@ import App from "../../common/App";
 import {Button, Card, Form, Input, message, Select, Switch} from "antd";
 import BreadcrumbCustom from "../BreadcrumbCustom";
 import Link from "react-router-dom/Link";
-import {CTYPE, Utils} from "../../common";
+import {CTYPE, U, Utils} from "../../common";
 
 const Option = Select.Option;
 
@@ -30,17 +30,16 @@ class PaperEdit extends React.Component {
 
     loadData = () => {
         let {pagination} = this.state;
-        this.setState({loading: true});
         App.api('/oms/template/template_list', {
             templateQo: JSON.stringify({
                 pageNumber: pagination.current,
-                pageSize: pagination.pageSize
+                pageSize: pagination.pageSize,
+                status:1
             })
         }).then((template) => {
             let pagination = Utils.pager.convert2Pagination(template);
             this.setState({
                 template: template.content,
-                loading: false,
                 pagination
             });
         })
@@ -48,6 +47,9 @@ class PaperEdit extends React.Component {
 
     handleSubmit = () => {
         let {paper} = this.state;
+        if (U.str.isEmpty(status)) {
+            paper.status = "1"
+        }
         App.api('/oms/paper/save', {
             paper: JSON.stringify({
                 ...paper
@@ -98,7 +100,7 @@ class PaperEdit extends React.Component {
                         })
                     }}>
                         {template.map((t, index) => {
-                            return <Option key={index} value={t.id}>{t.templateName}</Option>
+                                return <Option key={index} value={t.id}>{t.templateName}</Option>
                         })}
                     </Select>
                 </Form.Item>

@@ -13,10 +13,6 @@ let id = 0;
 const Option = Select.Option;
 const {TreeNode} = TreeSelect;
 const desc = ['简单', '一般', '困难'];
-const ABC = ['A', 'B', 'C', 'D', 'E'];
-const JUDGE = [{answer: "1", label: '对'}, {answer: "2", label: '错'}];
-const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
-    {type: 4, label: '填空'}, {type: 5, label: '问答'}];
 
 class QuestionEdit extends React.Component {
 
@@ -55,11 +51,10 @@ class QuestionEdit extends React.Component {
         App.api("/oms/tag/tag", {id}).then((tag) => {
             this.setState({tag})
         });
-        App.api('/oms/category/father')
+        App.api('/oms/category/categorys')
             .then((list) => {
                 this.setState({
                     list,
-                    loading: false,
                 });
             });
     };
@@ -84,21 +79,21 @@ class QuestionEdit extends React.Component {
     handleSubmit = () => {
         let {status} = this.state;
         this.props.form.validateFields((err, values) => {
-            let {options} = values;
+            let {options=[]} = values;
             let {question = {}, ids = []} = this.state;
             if (U.str.isEmpty(status)) {
                 question.status = "1"
             }
             App.api('/oms/question/save', {
-                'question': JSON.stringify({
+                question: JSON.stringify({
                     ...question,
                     tagsId: ids,
                     options
                 })
-            }).then((res) => {
+            }).then((result) => {
                 message.success("保存成功");
                 window.history.back();
-            });
+            })
         })
     };
 
@@ -157,7 +152,7 @@ class QuestionEdit extends React.Component {
                         },
                     ],
                 })(<Input placeholder="请添加选项" style={{width: '75%', marginRight: 8}}
-                          addonBefore={ABC[index]}
+                          addonBefore={CTYPE.ABC[index]}
                           addonAfter={<Icon type="minus-circle-o" onClick={() => this.remove(k)}
                           />}/>)}
             </Form.Item>
@@ -176,18 +171,18 @@ class QuestionEdit extends React.Component {
                                htmlType="submit">提交</Button>}
                 style={CTYPE.formStyle}>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="难度">
-                        <Rate tooltips={desc} style={{fontSize: 14}} count={3} value={difficulty} onChange={(difficulty) => {
-                            this.setState({
-                                question: {
-                                    ...question,
-                                    difficulty
-                                }
-                            })
-                        }}/>
+                    <Rate tooltips={desc} style={{fontSize: 14}} count={3} value={difficulty}
+                          onChange={(difficulty) => {
+                              this.setState({
+                                  question: {
+                                      ...question,
+                                      difficulty
+                                  }
+                              })
+                          }}/>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="分类">
                     <TreeSelect
-                        // showSearch
                         style={{width: 270}}
                         value={categoryId}
                         dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
@@ -202,19 +197,25 @@ class QuestionEdit extends React.Component {
                             })
                         }}>
                         {list.map((v, index1) => {
-                            let {id, name, children = []} = v;
-                            return <TreeNode title={name} value={id} key={index1}>
-                                {children.map((va, index2) => {
-                                    let {id, name, children = []} = va;
-                                    return <TreeNode key={`${index1}-${index2}`} value={id} title={name}>
-                                        {children.map((val, index3) => {
-                                            let {id, name} = val;
-                                            return <TreeNode title={name} value={id}
-                                                             key={`${index1}-${index2}-${index3}`}/>
-                                        })}
-                                    </TreeNode>
-                                })}
-                            </TreeNode>
+                            if (v.status === 1) {
+                                let {id, name, children = []} = v;
+                                return <TreeNode title={name} value={id} key={index1}>
+                                    {children.map((va, index2) => {
+                                        if (va.status === 1) {
+                                            let {id, name, children = []} = va;
+                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`}>
+                                                {children.map((val, index3) => {
+                                                    if (val.status === 1) {
+                                                        let {id, name} = val;
+                                                        return <TreeNode title={name} value={id}
+                                                                         key={`${index1}-${index2}-${index3}`}/>
+                                                    }
+                                                })}
+                                            </TreeNode>
+                                        }
+                                    })}
+                                </TreeNode>
+                            }
                         })}
                     </TreeSelect>
                 </Form.Item>
@@ -245,8 +246,8 @@ class QuestionEdit extends React.Component {
                                 }
                             });
                         }}>
-                        {OPTIONS.map((k, index) => {
-                            return <Option value={k.type} key={OPTIONS}>{k.label}</Option>
+                        {CTYPE.options.map((k, index) => {
+                            return <Option value={k.type} key={CTYPE.options}>{k.label}</Option>
                         })}
                     </Select>
                 </Form.Item>
@@ -272,7 +273,7 @@ class QuestionEdit extends React.Component {
                         })
                     }}>
                         {keys.map((k, index) => {
-                            return <Radio value={ABC[index]} key={index}>{ABC[index]}</Radio>
+                            return <Radio value={CTYPE.ABC[index]} key={index}>{CTYPE.ABC[index]}</Radio>
                         })}
                     </Radio.Group>
                 </Form.Item>}
@@ -287,7 +288,7 @@ class QuestionEdit extends React.Component {
                         })
                     }}>
                         {keys.map((k, index) => {
-                            return <Checkbox value={ABC[index]} key={index}>{ABC[index]}</Checkbox>
+                            return <Checkbox value={CTYPE.ABC[index]} key={index}>{CTYPE.ABC[index]}</Checkbox>
                         })}
                     </Checkbox.Group>
                 </Form.Item>}
@@ -301,8 +302,8 @@ class QuestionEdit extends React.Component {
                             }
                         })
                     }}>
-                        {JUDGE.map((k, index) => {
-                            return <Radio value={k.answer} key={JUDGE}>{k.label}</Radio>
+                        {CTYPE.judge.map((k, index) => {
+                            return <Radio value={k.answer} key={CTYPE.judge}>{k.label}</Radio>
                         })}
                     </Radio.Group>
                 </Form.Item>}

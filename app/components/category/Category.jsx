@@ -1,11 +1,10 @@
 import React from 'react';
-import {CTYPE, U, Utils} from "../../common";
-import {Button, Modal, message, Table, Menu, Dropdown, Icon, Card} from 'antd';
+import 'antd/dist/antd.css';
+import {Tree, Icon, Card, Button, Modal, notification, message} from 'antd';
 import App from "../../common/App";
-import "../../assets/css/test.scss"
-import BreadcrumbCustom from "../BreadcrumbCustom"
 import CategoryUtils from "./CategoryUtils";
 
+const {TreeNode} = Tree;
 
 export default class Category extends React.Component {
 
@@ -13,142 +12,131 @@ export default class Category extends React.Component {
         super(props);
         this.state = {
             list: [],
-            loading: false,
+            loading: false
         }
     }
 
     componentDidMount() {
-        this.loadData();
+        this.loadData()
     }
 
-    handleTableChange = (pagination) => {
-        this.setState({
-            pagination: pagination
-        }, () => this.loadData());
-    };
-
     loadData = () => {
-        let {pagination = {}} = this.state;
-
         this.setState({loading: true});
-        App.api('/oms/category/father', {
-            categoryQo: JSON.stringify({
-                pageNumber: pagination.current,
-                pageSize: pagination.pageSize
-            })
-        })
+        App.api('/oms/category/categorys')
             .then((list) => {
-                let pagination = Utils.pager.convert2Pagination(list);
                 this.setState({
                     list,
-                    loading: false,
-                    pagination
+                    loading: false
                 });
             });
     };
 
-    remove = (id, index) => {
+    edit = question => {
+        App.go(`/app/question/questionEdit/${question.id}`)
+    };
+
+    status = (id, status) => {
+        let txt = status === 1 ? '禁用' : '启用';
         Modal.confirm({
-            title: `确认删除此项？`,
+            title: `确认${txt}?`,
             onOk: () => {
-                App.api("/oms/category/delete", {id}).then(() => {
-                    message.success(`删除成功`);
-                    let list = this.state.list;
-                    this.setState({
-                        list: U.array.remove(list, index)
-                    })
+                App.api('/oms/category/status', {id, status: status === 1 ? 2 : 1}).then(() => {
+                    notification['success']({
+                        message: '提示',
+                        description: `${txt} 成功`,
+                    });
+                    this.loadData();
                 })
             },
             onCancel() {
-
-            }
-        })
+            },
+        });
     };
 
-    edit = (category) => {
-        CategoryUtils.edit(category, this.loadData);
+    remove = (id) => {
+        Modal.confirm({
+            title: `确认删除操作?此操作将删除分类下所有单选题和材料`,
+            onOk: () => {
+                App.api('/oms/category/remove', {id}).then(() => {
+                    message.success(`操作成功`);
+                    this.loadData();
+                })
+            },
+            onCancel() {
+            },
+        });
     };
 
-    edit1 = (category) => {
-        CategoryUtils.edit(category, this.loadData);
-    };
+    renderTitle = (category, parent, level, index) => {
+        let {id, name, priority, status, children = []} = category;
+        let on = status === 1;
+        category.level = level;
+        category.index = index;
+        return <span style={{color: on ? 'black' : 'gray'}}>
+            [{priority}]{name}
+            &nbsp;
+            <a title='编辑分类' onClick={() => {
+                CategoryUtils.editType(category, parent, this.loadData);
+            }}><Icon type='edit'/></a>
+            {level !== 3 && <span>&nbsp;
+                <a title='新建子分类' onClick={() => {
+                    CategoryUtils.editType({
+                        id: 0,
+                        level: level + 1,
+                        index: children.length + 1
+                    }, category, this.loadData);
+                }}><Icon type='file-add' theme="twoTone" twoToneColor="#91d5ff"/></a>
+            </span>}
+            &nbsp;
+            <a onClick={() => {
+                this.status(id, status);
+            }}>{on ? <Icon type='stop' theme="twoTone" twoToneColor="#ffa39e"/> :
+                <Icon type='check-circle' theme="twoTone" twoToneColor="#b7eb8f"/>}</a>
+            &nbsp;
+            <a onClick={() => {
+                this.remove(id);
+            }}><Icon type='delete' theme="twoTone" twoToneColor="#ff0000"/></a>
 
+        </span>;
+    };
 
     render() {
 
-        let {list = [], loading, pagination} = this.state;
+        let {list = []} = this.state;
 
-        return <div className="common-list">
+        return <div>
 
-            <BreadcrumbCustom first={CTYPE.link.category.txt}/>
+            <Card bordered={false} extra={<Button type="primary" icon="file-add" onClick={() => {
+                CategoryUtils.editType({id: 0, level: 1, index: list.length + 1}, {id: 0}, this.loadData);
+            }}>新建一级分类</Button>}>
 
-            <Card>
+                <Tree defaultExpandAll showLine>
+                    {list.map((v, index1) => {
+                        let {name, children = []} = v;
+                        return <TreeNode title={this.renderTitle(v, {id: 0}, 1, index1 + 1)} key={`${index1}`}>
 
-                <div style={{marginBottom: '10px', height: '30px'}}>
-                    <Button type="primary" icon="user-add" onClick={() => {
-                        this.edit()
-                    }}>新建一级分类</Button>
-                </div>
+                            {children.map((va, index2) => {
+                                let {name, children = []} = va;
+                                return <TreeNode title={this.renderTitle(va, v, 2, index2 + 1)}
+                                                 key={`${index1}-${index2}`}>
 
-                <Table
-                    columns={[{
-                        title: '名称',
-                        dataIndex: 'name',
-                        className: 'txt-center',
-                        width: '25%',
-                    }, {
-                        title: '权重',
-                        dataIndex: 'priority',
-                        className: 'txt-center',
-                    }, {
-                        title: '创建时间',
-                        dataIndex: 'createdAt',
-                        className: 'txt-center',
-                        render: (updatedAt) => {
-                            return U.date.format(new Date(updatedAt), 'yyyy-MM-dd/HH:mm');
-                        }
-                    }, {
-                        title: "状态",
-                        dataIndex: 'c-status',
-                        className: 'txt-center',
-                        width: '100px',
-                        render: (obj, c) => {
-                            return <div className="state">
-                                {c.status === 1 ? <span className="important">启用</span> :
-                                    <span className="disabled">停用</span>}
-                            </div>
-                        }
-                    }, {
-                        title: '操作',
-                        dataIndex: 'option',
-                        className: 'txt-center',
-                        render: (obj, category, index) => {
+                                    {children.map((val, index3) => {
+                                        let {name} = val;
+                                        return <TreeNode title={this.renderTitle(val, va, 3, index3 + 1)}
+                                                         key={`${index1}-${index2}-${index3}`}/>
+                                    })}
 
-                            return <Dropdown overlay={<Menu>
-                                <Menu.Item key="1">
-                                    <a onClick={() => this.edit(category)}>编辑</a>
-                                </Menu.Item>
-                                <Menu.Divider/>
-                                <Menu.Item key="2">
-                                    <a onClick={() => this.edit1({pId: category.id})}>新建子分类</a>
-                                </Menu.Item>
-                                <Menu.Divider/>
-                                <Menu.Item key="3">
-                                    <a onClick={() => this.remove(category.id, index)}>删除</a>
-                                </Menu.Item>
-                            </Menu>} trigger={['click']}>
-                                <a className="ant-dropdown-link">操作 <Icon type="down"/>
-                                </a>
-                            </Dropdown>
-                        }
-                    }]}
-                    rowkey={item => item.index}
-                    dataSource={list}
-                    loading={loading}
-                    pagination={{...pagination, ...CTYPE.commonPagination}}
-                    onChange={this.handleTableChange}/>
+                                </TreeNode>
+                            })}
+
+                        </TreeNode>
+                    })}
+
+
+                </Tree>
+
             </Card>
         </div>
     }
-
 }
+

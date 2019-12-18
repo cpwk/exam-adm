@@ -4,7 +4,6 @@ let CTYPE = (() => {
 
     let minlength = {title: 1, intro: 1};
 
-
     let eidtMaxWidth = 1800;
 
     let eidtMinWidth = 900;
@@ -12,6 +11,15 @@ let CTYPE = (() => {
     let formStyle = {minWidth: eidtMinWidth, maxWidth: eidtMaxWidth, marginTop: '20px'};
 
     return {
+
+        ABC: ['A', 'B', 'C', 'D', 'E'],
+
+        judge: [{answer: "1", label: '对'}, {answer: "2", label: '错'}],
+
+        displayType: ['单选题', '多选题', '判断题', '填空题', '问答题'],
+
+        options: [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
+            {type: 4, label: '填空'}, {type: 5, label: '问答'}],
 
         minprice: 0,
         maxprice: 1000000,
@@ -57,7 +65,7 @@ let CTYPE = (() => {
             tag: {key: '/app/tag/tag', path: '/app/tag/tag', txt: '标签管理'},
             template: {key: '/app/template/template', path: '/app/template/template', txt: '试卷模板'},
             paper: {key: '/app/paper/paper', path: '/app/paper/paper', txt: '试卷生成'},
-            user: {key: '/app/user/userInfo', path: '/app/user/userInfo', txt: '用户信息'},
+            user: {key: '/app/user/users', path: '/app/user/users', txt: '用户信息'},
             ws_partners: {key: '/app/ws/partners', path: '/app/ws/partners', txt: '合作伙伴'},
             ws_articles: {key: '/app/ws/articles', path: '/app/ws/articles', txt: '动态管理'},
             ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查问卷模板'},
@@ -86,7 +94,7 @@ let CTYPE = (() => {
                 sm: {span: 16},
             },
         },
-        formItemLayoutWithOutLabel : {
+        formItemLayoutWithOutLabel: {
             wrapperCol: {
                 xs: {span: 24, offset: 0},
                 sm: {span: 20, offset: 4},
@@ -134,7 +142,7 @@ let CTYPE = (() => {
                 },
             },
         },
-        formItemLayouts : {
+        formItemLayouts: {
             labelCol: {
                 xs: {span: 24},
                 sm: {span: 4},

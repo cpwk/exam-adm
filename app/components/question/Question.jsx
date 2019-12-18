@@ -18,8 +18,9 @@ export default class Question extends React.Component {
         this.state = {
             question: [],
             loading: false,
-            q: '',
             list: [],
+            type: 0,
+            difficulty: 0,
             pagination: {
                 pageSize: CTYPE.pagination.pageSize,
                 current: 1,
@@ -40,18 +41,18 @@ export default class Question extends React.Component {
     };
 
     getQuery = () => {
-        let {value, type, difficulty, topic} = this.state;
+        let {categoryId, type, difficulty, topic} = this.state;
 
         let query = {};
         query.type = type;
         query.topic = topic;
-        query.categoryId = value;
+        query.categoryId = categoryId;
         query.difficulty = difficulty;
         return query;
     };
 
     loadProps = () => {
-        App.api('/oms/category/father').then((list) => {
+        App.api('/oms/category/categorys').then((list) => {
             this.setState({list});
         });
     };
@@ -75,16 +76,13 @@ export default class Question extends React.Component {
         });
     };
 
-    remove = (id, index) => {
+    status = (item, index) => {
         Modal.confirm({
-            title: `确认删除此项？`,
+            title: `确认${item.status === 1 ? "停用" : "启用"}此项`,
             onOk: () => {
-                App.api("/oms/question/delete", {id}).then(() => {
-                    message.success(`删除成功`);
-                    let question = this.state.question;
-                    this.setState({
-                        question: U.array.remove(question, index)
-                    })
+                App.api("/oms/question/status", {id: item.id}).then(() => {
+                    message.success(`操作成功`);
+                    this.loadData();
                 })
             },
             onCancel() {
@@ -116,37 +114,66 @@ export default class Question extends React.Component {
                             placeholder="全部分类"
                             allowClear
                             onSelect={(value) => {
-                                this.setState({value});
+                                this.setState({
+                                    categoryId: value, pagination: {
+                                        ...pagination,
+                                        current: 1
+                                    }
+                                }, () => {
+                                    this.loadData();
+                                })
                             }}>
                             {list.map((v, index1) => {
-                                let {id, name, children = []} = v;
-                                return <TreeNode title={name} value={id} key={index1}>
-                                    {children.map((va, index2) => {
-                                        let {id, name, children = []} = va;
-                                        return <TreeNode key={`${index1}-${index2}`} value={id} title={name}>
-                                            {children.map((val, index3) => {
-                                                let {id, name} = val;
-                                                return <TreeNode title={name} value={id}
-                                                                 key={`${index1}-${index2}-${index3}`}/>
-                                            })}
-                                        </TreeNode>
-                                    })}
-                                </TreeNode>
+                                if (v.status === 1) {
+                                    let {id, name, children = []} = v;
+                                    return <TreeNode title={name} value={id} key={index1}>
+                                        {children.map((va, index2) => {
+                                            if (va.status === 1) {
+                                                let {id, name, children = []} = va;
+                                                return <TreeNode title={name} value={id} key={`${index1}-${index2}`}>
+                                                    {children.map((val, index3) => {
+                                                        if (val.status === 1) {
+                                                            let {id, name} = val;
+                                                            return <TreeNode title={name} value={id}
+                                                                             key={`${index1}-${index2}-${index3}`}/>
+                                                        }
+                                                    })}
+                                                </TreeNode>
+                                            }
+                                        })}
+                                    </TreeNode>
+                                }
                             })}
                         </TreeSelect>
                         &nbsp;
-                        <Select placeholder="全部类型" onSelect={(type) => {
-                            this.setState({type});
+                        <Select placeholder="全部类型" onSelect={(value) => {
+                            this.setState({
+                                type: value, pagination: {
+                                    ...pagination,
+                                    current: 1
+                                }
+                            }, () => {
+                                this.loadData();
+                            })
                         }} style={{width: 105}}>
+                            <Option value={0}>全部类型</Option>
                             <Option value={1}>单选</Option>
                             <Option value={2}>多选</Option>
                             <Option value={3}>填空</Option>
                             <Option value={4}>问答</Option>
                         </Select>
                         &nbsp;
-                        <Select placeholder="全部难度" onSelect={(difficulty) => {
-                            this.setState({difficulty});
+                        <Select placeholder="全部难度" onSelect={(value) => {
+                            this.setState({
+                                difficulty: value, pagination: {
+                                    ...pagination,
+                                    current: 1
+                                }
+                            }, () => {
+                                this.loadData();
+                            })
                         }} style={{width: 105}}>
+                            <Option value={0}>全部难度</Option>
                             <Option value={1}>一星</Option>
                             <Option value={2}>二星</Option>
                             <Option value={3}>三星</Option>
@@ -177,7 +204,7 @@ export default class Question extends React.Component {
                         render: (text, item, i) => i + 1
                     }, {
                         title: '分类',
-                        dataIndex: 'categoryName.name',
+                        dataIndex: 'category.name',
                         className: 'txt-center',
                     }, {
                         title: '题目',
@@ -245,7 +272,10 @@ export default class Question extends React.Component {
                                         <a onClick={() => this.edit(item)}>编辑</a>
                                     </Menu.Item>
                                     <Menu.Item key="2">
-                                        <a onClick={() => this.remove(item.id, index)}>删除</a>
+                                        <a onClick={() => this.status(item, index)}>
+                                            {item.status === 1 ? <span>停用</span> :
+                                                <span>启用</span>}
+                                        </a>
                                     </Menu.Item>
                                 </Menu>} trigger={['click']}>
                                 <a className={"ant-dropdown-link"}>

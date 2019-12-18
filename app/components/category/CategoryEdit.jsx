@@ -2,13 +2,11 @@ import React from 'react'
 import App from '../../common/App.jsx'
 import U from '../../common/U.jsx'
 import Utils from '../../common/Utils.jsx'
-import {Input, InputNumber, message, Modal, Form, Switch, Select} from 'antd';
+import {Input, InputNumber, message, Modal, Form} from 'antd';
 import {CTYPE} from "../../common";
 import '../../assets/css/common/common-edit.less'
 
 const id_div = 'div-dialog-category-edit';
-const Option = Select.Option;
-
 
 export default class CategoryEdit extends React.Component {
 
@@ -16,32 +14,37 @@ export default class CategoryEdit extends React.Component {
         super(props);
         this.state = {
             category: this.props.category,
-            uploading: false,
+            parent: this.props.parent,
         };
     }
 
     submit = () => {
 
-        let {category = {}} = this.state;
-        let {name, priority, pId} = category;
+        let {category, parent = {}} = this.state;
+        let {id, sequence = '', priority = 1, level, index} = category;
 
-        if (U.str.isEmpty(name)) {
-            message.warn('请填写名称');
-            return;
+        if (id === 0) {
+            let _index = U.date.pad(index);
+            if (level === 1) {
+                sequence = _index + '0000';
+            } else if (level === 2) {
+                sequence = parent.sequence.substring(0, 2) + _index + '00';
+            } else {
+                sequence = parent.sequence.substring(0, 4) + _index;
+            }
+            category.sequence = sequence;
+            category.priority = priority;
+            category.pId = parent.id;
+            category.status = 1;
         }
-        if (U.str.isEmpty(priority)) {
-            category.priority = 1;
-        }
-        if (U.str.isEmpty(pId)) {
-            category.pId = 0;
-        }
+
         App.api('/oms/category/save', {
                 category: JSON.stringify(category)
             }
         ).then(() => {
             message.success('已保存');
-            this.props.loadData();
             this.close();
+            this.props.loadData();
         });
     };
 
@@ -53,9 +56,9 @@ export default class CategoryEdit extends React.Component {
 
         let {category = {}} = this.state;
 
-        let {name, priority, status, pId = '0'} = category;
+        let {id, name, priority = 1} = category;
 
-        return <Modal title={'新建分类'}
+        return <Modal title={id > 0 ? '编辑分类' : '新建分类'}
                       getContainer={() => Utils.common.createModalContainer(id_div)}
                       visible={true}
                       width={'600px'}
@@ -73,11 +76,11 @@ export default class CategoryEdit extends React.Component {
                                        name: e.target.value
                                    }
                                })
-                           }}/>详情
+                           }}/>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="权重">
                     <InputNumber
-                        value={priority} max={99}
+                        value={priority} max={99} min={1}
                         onChange={(v) => {
                             this.setState({
                                 category: {
@@ -86,16 +89,6 @@ export default class CategoryEdit extends React.Component {
                                 }
                             })
                         }}/>
-                </Form.Item>
-                <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
-                    <Switch checkedChildren="启用" unCheckedChildren="停用" checked={status === 1} onChange={(chk) => {
-                        this.setState({
-                            category: {
-                                ...category,
-                                status: chk ? 1 : 2
-                            }
-                        })
-                    }}/>
                 </Form.Item>
             </div>
         </Modal>

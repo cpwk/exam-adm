@@ -8,10 +8,15 @@ let CategoryUtils = (() => {
         Utils.common.renderReactDOM(<CategoryEdit category={category} loadData={loadData}/>);
     };
 
+    let editType = (category, parent, loadData) => {
+        Utils.common.renderReactDOM(<CategoryEdit category={category} parent={parent} loadData={loadData}/>);
+    };
+
     return {
-        edit
+        edit, editType
     }
 
 })();
+
 
 export default CategoryUtils;

@@ -1,15 +1,10 @@
 import React, {Component} from 'react';
 import App from "../../common/App";
-import {CTYPE, Utils} from "../../common";
+import {CTYPE} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom";
 import Link from "react-router-dom/Link";
-import {Card, Radio, Input, Checkbox, Select} from "antd";
+import {Card} from "antd";
 import "../../assets/css/template/TemplatePreview.less"
-
-const OPTIONS = ['单选题', '多选题', '判断题', '填空题', '问答题'];
-const JUDGE = [{answer: "1", label: '对'}, {answer: "2", label: '错'}];
-const ABC = ['A', 'B', 'C', 'D', 'E'];
-const {Option} = Select;
 
 class PaperPreview extends Component {
 
@@ -55,10 +50,6 @@ class PaperPreview extends Component {
         let {name, duration, totalScore, passingScore} = paper;
         let {questions = []} = paper;
 
-        OPTIONS.map((o, index) => {
-            return <Option value={o.type} key={OPTIONS}>{o.label}</Option>
-        });
-
         return <div>
             <Card
                 title={<BreadcrumbCustom
@@ -84,12 +75,12 @@ class PaperPreview extends Component {
                                         {(k.type === 1 || k.type === 2) &&
                                         <li>
                                             {(k.type === 1 || k.type === 2) &&
-                                            index + 1 + (":") + "(" + OPTIONS[`${k.type - 1}`] + ")" + k.topic}
+                                            index + 1 + (":") + "(" + CTYPE.displayType[`${k.type - 1}`] + ")" + k.topic}
 
                                             <li>
                                                 {k.options.map((obj, i) => {
-                                                    return k.type === 1 ? <li>{ABC[i]}.{obj}</li> :
-                                                        <li>{ABC[i]}.{obj}</li>
+                                                    return k.type === 1 ? <li>{CTYPE.ABC[i]}.{obj}</li> :
+                                                        <li>{CTYPE.ABC[i]}.{obj}</li>
                                                 })}
                                             </li>
                                         </li>}
@@ -98,10 +89,10 @@ class PaperPreview extends Component {
                                         {k.type === 3 &&
                                         <li>
                                             {k.type === 3 &&
-                                            index + 1 + (":") + "(" + OPTIONS[`${k.type - 1}`] + ")"}
+                                            index + 1 + (":") + "(" + CTYPE.displayType[`${k.type - 1}`] + ")"}
                                             <li dangerouslySetInnerHTML={{__html: k.topic}}/>
                                             <li>
-                                                {JUDGE.map((k, index) => {
+                                                {CTYPE.judge.map((k, index) => {
                                                     return <li>{k.answer}.{k.label}</li>
                                                 })}
                                             </li>
@@ -111,7 +102,7 @@ class PaperPreview extends Component {
                                         {(k.type === 4 || k.type === 5) &&
                                         <li>
                                             {(k.type === 4 || k.type === 5) &&
-                                            index + 1 + (":") + "(" + OPTIONS[`${k.type - 1}`] + ")" + k.topic}
+                                            index + 1 + (":") + "(" + CTYPE.displayType[`${k.type - 1}`] + ")" + k.topic}
                                             <li>
                                                 答：
                                             </li>

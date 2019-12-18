@@ -28,6 +28,7 @@ module.exports = {
     entry: [
         'babel-polyfill',
         'webpack-dev-server/client?http://localhost:9087',
+        // 'webpack-dev-server/client?http://192.168.11.1:9087',
         path.resolve(__dirname, 'app/main.jsx')
     ],
     output: {

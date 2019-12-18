@@ -55,16 +55,13 @@ class Paper extends Component {
         App.go(`/app/paper/paperPreview/${paper.id}`)
     };
 
-    remove = (id, index) => {
+    status = (item, index) => {
         Modal.confirm({
-            title: `确认下架此试卷？`,
+            title: `确认${item.status === 1 ? "下架" : "上架"}此试卷`,
             onOk: () => {
-                App.api("/oms/paper/delete", {id}).then(() => {
-                    message.success(`下架成功`);
-                    let paper = this.state.paper;
-                    this.setState({
-                        paper: U.array.remove(paper, index)
-                    })
+                App.api("/oms/paper/status", {id:item.id}).then(() => {
+                    message.success(`操作成功`);
+                    this.loadData();
                 })
             },
             onCancel() {
@@ -145,7 +142,10 @@ class Paper extends Component {
                                     <a onClick={() => this.preview(item)}>预览</a>
                                 </Menu.Item>
                                 <Menu.Item key="3">
-                                    <a onClick={() => this.remove(item.id, index)}>下架</a>
+                                    <a onClick={() => this.status(item, index)}>
+                                        {item.status === 1 ? <span>下架</span> :
+                                            <span>上架</span>}
+                                    </a>
                                 </Menu.Item>
                             </Menu>} trigger={['click']}>
                                 <a className="ant-dropdown-link">

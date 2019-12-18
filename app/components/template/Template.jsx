@@ -14,6 +14,7 @@ class Template extends Component {
         this.state = {
             loading: false,
             template: [],
+            status: 0,
             pagination: {
                 pageSize: CTYPE.pagination.pageSize,
                 current: 1,
@@ -57,12 +58,12 @@ class Template extends Component {
         TemplateUtils.edit(template, this.loadData);
     };
 
-    remove = (id, index) => {
+    status = (item, index) => {
         Modal.confirm({
-            title: `确认停用此模板？`,
+            title: `确认${item.status === 1 ? "停用" : "启用"}此项`,
             onOk: () => {
-                App.api("/oms/template/delete", {id}).then(() => {
-                    message.success(`停用成功`);
+                App.api("/oms/template/status", {id:item.id}).then(() => {
+                    message.success(`操作成功`);
                     this.loadData();
                 })
             },
@@ -102,11 +103,19 @@ class Template extends Component {
                         this.edit({id: 0})
                     }}>新建模板</Button>
                     <Col style={{float: 'right'}}>
-                        <Select placeholder="状态查询" onSelect={(status) => {
-                            this.setState({status});
+                        <Select placeholder="状态查询" onSelect={(value) => {
+                            this.setState({
+                                status: value, pagination: {
+                                    ...pagination,
+                                    current: 1
+                                }
+                            }, () => {
+                                this.loadData();
+                            })
                         }} style={{width: 105}}>
-                            <Option value={1}>已上架</Option>
-                            <Option value={2}>未上架</Option>
+                            <Option value={0}>全部状态</Option>
+                            <Option value={1}>启用</Option>
+                            <Option value={2}>停用</Option>
                         </Select>
                         &nbsp;
                         <InputSearch
@@ -164,7 +173,7 @@ class Template extends Component {
                         className: 'txt-center',
                         render: (duration) => {
                             return <div>
-                                {<span>{duration + "/分钟"}</span>}
+                                {<span>{duration/1000/60 + "/分钟"}</span>}
                             </div>
                         }
                     }, {
@@ -210,7 +219,10 @@ class Template extends Component {
                                     <a onClick={() => this.preview(item)}>预览</a>
                                 </Menu.Item>
                                 <Menu.Item key="3">
-                                    <a onClick={() => this.remove(item.id, index)}>停用</a>
+                                    <a onClick={() => this.status(item, index)}>
+                                        {item.status === 1 ? <span>停用</span> :
+                                            <span>启用</span>}
+                                    </a>
                                 </Menu.Item>
                             </Menu>} trigger={['click']}>
                                 <a className="ant-dropdown-link">

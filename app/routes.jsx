@@ -6,15 +6,14 @@ import Index from './Index';
 import Question from "./components/question/Question";
 import QuestionEdit from "./components/question/QuestionEdit";
 import Dashboard from "./components/dashboard/Dashboard";
-import Category from "./components/category/Category";
 import CategoryEdit from "./components/category/CategoryEdit";
 import Tag from "./components/tag/Tag";
 import TagEdit from "./components/tag/TagEdit";
-import Categoryx from "./components/category/Categoryx";
+import Category from "./components/category/Category";
 import Template from "./components/template/Template";
 import TemplateEdit from "./components/template/TemplateEdit";
 import TemplateConten from "./components/template/TemplateContent";
-import UserInfo from "./components/user/UserInfo";
+import Users from "./components/user/Users";
 import Paper from "./components/paper/Paper";
 import PaperEdit from "./components/paper/PaperEdit";
 import TemplatePreview from "./components/template/TemplatePreview";
@@ -39,7 +38,6 @@ const routes = (
                                 <Route path='/app/dashboard/index' component={Dashboard}/>
                                 <Route path='/app/question/question' component={Question}/>
                                 <Route path='/app/question/questionEdit/:id' component={QuestionEdit}/>
-                                <Route path='/app/category/category' component={Category}/>
                                 <Route path='/app/category/categoryEdit/:id' component={CategoryEdit}/>
                                 <Route path='/app/tag/tag' component={Tag}/>
                                 <Route path='/app/tag/tagEdit/:id' component={TagEdit}/>
@@ -49,9 +47,9 @@ const routes = (
                                 <Route path='/app/template/templatePreview/:id' component={TemplatePreview}/>
                                 <Route path='/app/paper/paper' component={Paper}/>
                                 <Route path='/app/paper/paperEdit/:id' component={PaperEdit}/>
-                                <Route path='/app/user/userInfo' component={UserInfo}/>
+                                <Route path='/app/user/users' component={Users}/>
                                 <Route path='/app/paper/paperPreview/:id' component={PaperPreview}/>
-                                <Route path='/app/category/categoryx' component={Categoryx}/>
+                                <Route path='/app/category/category' component={Category}/>
                             </Index>
                         )}/>
 

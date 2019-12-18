@@ -62,10 +62,10 @@ class Login extends React.Component {
                         }
                     ).then((result) => {
 
-                        // Utils.adm.savePermissions(res.admin.role.permissions);
+                        // Utils.adm.savePermissions(result.admin.role.permissions);
 
-                        // KvStorage.set('admin-profile', JSON.stringify(res.admin));
-                        // KvStorage.set('admin-token', res.session.token);
+                        // KvStorage.set('admin-profile', JSON.stringify(result.admin));
+                        // KvStorage.set('admin-token', result.session.token);
 
 
                         App.afterSignin("admin-token", result.adminSession.token);

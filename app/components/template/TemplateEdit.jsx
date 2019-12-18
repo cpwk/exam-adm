@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {CTYPE} from "../../common";
+import {CTYPE, U} from "../../common";
 import {Card, Button, Form, TreeSelect, InputNumber, Input, Rate, Select, Switch, message} from "antd";
 import BreadcrumbCustom from "../BreadcrumbCustom";
 import Link from "react-router-dom/Link";
@@ -7,10 +7,6 @@ import App from "../../common/App";
 
 const {TreeNode} = TreeSelect;
 const {Option} = Select;
-
-
-const OPTIONS = [{type: 1, label: '单选'}, {type: 2, label: '多选'}, {type: 3, label: '判断'},
-    {type: 4, label: '填空'}, {type: 5, label: '问答'}];
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -36,14 +32,14 @@ class TemplateEdit extends Component {
     loadData = () => {
         let {id} = this.state;
         if (id > 0) {
-            App.api('/oms/template/template_id', {id}).then((template) => {
+            App.api('/oms/template/getById', {id}).then((template) => {
 
                     this.setState({template: template});
                     this.setForm(template);
                 }
             )
         }
-        App.api('/oms/category/father').then((list) => {
+        App.api('/oms/category/categorys').then((list) => {
             this.setState({list});
         });
     };
@@ -64,12 +60,17 @@ class TemplateEdit extends Component {
 
     handleSubmit = () => {
         let {template} = this.state;
-        let {content = [], totalScore} = template;
+        let {content = [], totalScore, duration} = template;
+        let _duration = duration * 1000 * 60;
+        if (U.str.isEmpty(status)) {
+            template.status = "1"
+        }
         App.api("/oms/template/save", {
             "template": JSON.stringify({
                 ...template,
                 content: content,
-                totalScore: totalScore
+                totalScore: totalScore,
+                duration: _duration
             })
         }).then(() => {
             message.success("保存成功");
@@ -86,17 +87,19 @@ class TemplateEdit extends Component {
             let total = number * score;
             totalScore = totalScore + total;
         });
+        let passingScore = totalScore * 0.7;
         this.setState({
             template: {
                 ...template,
-                totalScore
+                totalScore,
+                passingScore
             }
         })
     };
 
     render() {
         let {list = [], template = {}} = this.state;
-        let {templateName, categoryId, difficulty, status, content = [], totalScore = 0, duration, passingScore} = template;
+        let {templateName, categoryId, difficulty, status, content = [], totalScore = 0, duration, passingScore = 0} = template;
         let checkTypes = [];
         content.map((detail) => {
             checkTypes.push(detail.type);
@@ -149,19 +152,25 @@ class TemplateEdit extends Component {
                             })
                         }}>
                         {list.map((v, index1) => {
-                            let {id, name, children = []} = v;
-                            return <TreeNode title={name} value={id} key={index1}>
-                                {children.map((va, index2) => {
-                                    let {id, name, children = []} = va;
-                                    return <TreeNode key={`${index1}-${index2}`} value={id} title={name}>
-                                        {children.map((val, index3) => {
-                                            let {id, name} = val;
-                                            return <TreeNode title={name} value={id}
-                                                             key={`${index1}-${index2}-${index3}`}/>
-                                        })}
-                                    </TreeNode>
-                                })}
-                            </TreeNode>
+                            if (v.status === 1) {
+                                let {id, name, children = []} = v;
+                                return <TreeNode title={name} value={id} key={index1}>
+                                    {children.map((va, index2) => {
+                                        if (va.status === 1) {
+                                            let {id, name, children = []} = va;
+                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`}>
+                                                {children.map((val, index3) => {
+                                                    if (val.status === 1) {
+                                                        let {id, name} = val;
+                                                        return <TreeNode title={name} value={id}
+                                                                         key={`${index1}-${index2}-${index3}`}/>
+                                                    }
+                                                })}
+                                            </TreeNode>
+                                        }
+                                    })}
+                                </TreeNode>
+                            }
                         })}
                     </TreeSelect>
                 </Form.Item>
@@ -178,7 +187,7 @@ class TemplateEdit extends Component {
                                 checkTypes.map((type) => {
                                     let _type = content.find((item) => item.type === type);
                                     if (!_type) {
-                                        content.push({type, number: 0, score: 0});
+                                        content.push({type, number: 5, score: 2});
                                     }
                                 });
                                 content.map((detail) => {
@@ -197,8 +206,8 @@ class TemplateEdit extends Component {
                                 this.calc()
                             });
                         }}>
-                        {OPTIONS.map((k, index) => {
-                            return <Option value={k.type} key={OPTIONS}>{k.label}</Option>
+                        {CTYPE.options.map((k, index) => {
+                            return <Option value={k.type} key={CTYPE.options}>{k.label}</Option>
                         })}
                     </Select>
                 </Form.Item>
@@ -237,7 +246,7 @@ class TemplateEdit extends Component {
                     </div>
                 })}
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="考试时间">
-                    <InputNumber min={0} style={{width: '250px'}} value={duration} onChange={(e) => {
+                    <InputNumber min={0} max={180} style={{width: '250px'}} value={duration} onChange={(e) => {
                         this.setState({
                             template: {
                                 ...template,
@@ -251,14 +260,7 @@ class TemplateEdit extends Component {
                     <Input min={0} disabled={true} style={{width: '80px'}} value={totalScore}/>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="及格分数">
-                    <InputNumber min={0} style={{width: '80px'}} value={passingScore} onChange={(e) => {
-                        this.setState({
-                            template: {
-                                ...template,
-                                passingScore: e
-                            }
-                        })
-                    }}/>
+                    <Input min={0} disabled={true} style={{width: '80px'}} value={passingScore}/>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
                     <Switch checkedChildren="启用" unCheckedChildren="停用" checked={status === 1} onChange={(chk) => {
