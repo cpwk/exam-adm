@@ -8,6 +8,7 @@ import App from '../../common/App.jsx';
 import {CTYPE, U} from "../../common";
 import BreadcrumbCustom from "../BreadcrumbCustom"
 import HtmlEditor from "../../common/HtmlEditor";
+import TagUtils from "../tag/TagUtils";
 
 let id = 0;
 const Option = Select.Option;
@@ -26,7 +27,8 @@ class QuestionEdit extends React.Component {
             ids: [],
             list: [],
             options: [],
-            keys: []
+            keys: [],
+            cateId: 0
         }
     }
 
@@ -51,12 +53,11 @@ class QuestionEdit extends React.Component {
         App.api("/oms/tag/tag", {id}).then((tag) => {
             this.setState({tag})
         });
-        App.api('/oms/category/categorys')
-            .then((list) => {
-                this.setState({
-                    list,
-                });
+        App.api('/oms/category/categorys').then((list) => {
+            this.setState({
+                list,
             });
+        });
     };
 
     setForm = (question) => {
@@ -79,7 +80,7 @@ class QuestionEdit extends React.Component {
     handleSubmit = () => {
         let {status} = this.state;
         this.props.form.validateFields((err, values) => {
-            let {options=[]} = values;
+            let {options = []} = values;
             let {question = {}, ids = []} = this.state;
             if (U.str.isEmpty(status)) {
                 question.status = "1"
@@ -129,9 +130,13 @@ class QuestionEdit extends React.Component {
         })
     };
 
+    tagEdit = (tag) => {
+        TagUtils.edit(tag, this.loadData);
+    };
+
     render() {
 
-        let {question = {}, tag = [], ids = [], list = [], keys = []} = this.state;
+        let {question = {}, tag = [], ids = [], list = [], keys = [], cateId} = this.state;
         let {topic, categoryId, answer, status, type, difficulty} = question;
 
         const {getFieldDecorator} = this.props.form;
@@ -187,8 +192,8 @@ class QuestionEdit extends React.Component {
                         value={categoryId}
                         dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
                         placeholder="请选择分类"
-                        allowClear
                         onSelect={(value) => {
+                            this.setState({cateId: value});
                             this.setState({
                                 question: {
                                     ...question,
@@ -229,9 +234,14 @@ class QuestionEdit extends React.Component {
                             this.handleChange(ids)
                         }}>
                         {tag.map((g, i) => {
-                            return (<Option key={i} value={g.id}>{g.name}</Option>);
+                            if (cateId === g.categoryId) {
+                                return (<Option key={i} value={g.id}>{g.name}</Option>);
+                            }
                         })}
                     </Select>
+                    <span style={{marginLeft:'20px'}}><a onClick={() => {
+                        this.tagEdit();
+                    }}>添加标签</a></span>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="类型">
                     <Select

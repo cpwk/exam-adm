@@ -1,11 +1,13 @@
 import React from 'react'
 import App from '../../common/App.jsx'
 import Utils from '../../common/Utils.jsx'
-import {Input, message, Modal, Form} from 'antd';
+import {Input, message, Modal, Form, TreeSelect} from 'antd';
 import {CTYPE} from "../../common";
 import '../../assets/css/common/common-edit.less'
 
 const id_div = 'div-dialog-tag-edit';
+
+const {TreeNode} = TreeSelect;
 
 export default class TagEdit extends React.Component {
 
@@ -14,13 +16,26 @@ export default class TagEdit extends React.Component {
         this.state = {
             tag: this.props.tag,
             uploading: false,
+            list: []
         };
     }
+
+    componentDidMount() {
+        this.loadData()
+    }
+
+    loadData = () => {
+        App.api('/oms/category/categorys').then((list) => {
+            this.setState({
+                list,
+            });
+        });
+    };
 
     submit = () => {
         let {tag = {}} = this.state;
         App.api('/oms/tag/save', {
-            tag: JSON.stringify(tag)
+                tag: JSON.stringify(tag)
             }
         ).then(() => {
             message.success('已保存');
@@ -35,9 +50,9 @@ export default class TagEdit extends React.Component {
 
     render() {
 
-        let {tag = {}} = this.state;
+        let {tag = {}, list = []} = this.state;
 
-        let {name} = tag;
+        let {name, categoryId} = tag;
 
         return <Modal title={'新建标签'}
                       getContainer={() => Utils.common.createModalContainer(id_div)}
@@ -47,6 +62,44 @@ export default class TagEdit extends React.Component {
                       onOk={this.submit}
                       onCancel={this.close}>
             <div className="common-edit-page">
+                <Form.Item {...CTYPE.formItemLayout} required="true" label="分类">
+                    <TreeSelect
+                        style={{width: 300}}
+                        value={categoryId}
+                        dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                        placeholder="请选择分类"
+                        allowClear
+                        onSelect={(value) => {
+                            this.setState({
+                                tag: {
+                                    ...tag,
+                                    categoryId: value
+                                }
+                            })
+                        }}>
+                        {list.map((v, index1) => {
+                            if (v.status === 1) {
+                                let {id, name, children = []} = v;
+                                return <TreeNode title={name} value={id} key={index1}>
+                                    {children.map((va, index2) => {
+                                        if (va.status === 1) {
+                                            let {id, name, children = []} = va;
+                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`}>
+                                                {children.map((val, index3) => {
+                                                    if (val.status === 1) {
+                                                        let {id, name} = val;
+                                                        return <TreeNode title={name} value={id}
+                                                                         key={`${index1}-${index2}-${index3}`}/>
+                                                    }
+                                                })}
+                                            </TreeNode>
+                                        }
+                                    })}
+                                </TreeNode>
+                            }
+                        })}
+                    </TreeSelect>
+                </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} label="名称" required="true">
                     <Input style={{width: 300}} className="input-wide" placeholder="输入名称"
                            value={name} maxLength={64}

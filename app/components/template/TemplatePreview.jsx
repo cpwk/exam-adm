@@ -13,7 +13,6 @@ class TemplatePreview extends Component {
         this.state = {
             id: parseInt(this.props.match.params.id),
             template: {},
-            list: [],
             pagination: {
                 pageSize: CTYPE.pagination.pageSize,
                 current: 1,
@@ -29,14 +28,11 @@ class TemplatePreview extends Component {
     loadData = () => {
         let {id} = this.state;
         if (id > 0) {
-            App.api('/oms/template/getById', {id}).then((template) => {
+            App.api('/oms/template/template_id', {id}).then((template) => {
                     this.setState({template: template});
                     this.setForm(template);
                 }
             );
-            App.api('/oms/template/create', {id}).then((list) => {
-                this.setState({list: list})
-            })
         }
     };
 
@@ -55,8 +51,8 @@ class TemplatePreview extends Component {
     };
 
     render() {
-        let {template, list = []} = this.state;
-        let {templateName, duration, totalScore, passingScore} = template;
+        let {template} = this.state;
+        let {templateName, duration, totalScore, passingScore,questions=[]} = template;
 
         return <div>
             <Card
@@ -80,7 +76,7 @@ class TemplatePreview extends Component {
                         </ul>
                     </div>
                     <div className="paper-content">
-                        {list.map((k, index) => {
+                        {questions.map((k, index) => {
                             return <div>
                                 <ul>
                                     <li>

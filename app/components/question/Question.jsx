@@ -157,10 +157,9 @@ export default class Question extends React.Component {
                             })
                         }} style={{width: 105}}>
                             <Option value={0}>全部类型</Option>
-                            <Option value={1}>单选</Option>
-                            <Option value={2}>多选</Option>
-                            <Option value={3}>填空</Option>
-                            <Option value={4}>问答</Option>
+                            {CTYPE.options.map((k, index) => {
+                                return <Option value={k.type} key={CTYPE.options}>{k.label}</Option>
+                            })}
                         </Select>
                         &nbsp;
                         <Select placeholder="全部难度" onSelect={(value) => {

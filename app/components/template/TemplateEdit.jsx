@@ -22,6 +22,7 @@ class TemplateEdit extends Component {
             uploading: false,
             list: [],
             template: {},
+            _duration: 60
         }
     }
 
@@ -33,8 +34,9 @@ class TemplateEdit extends Component {
         let {id} = this.state;
         if (id > 0) {
             App.api('/oms/template/getById', {id}).then((template) => {
-
-                    this.setState({template: template});
+                    let {duration} = template;
+                    let _duration = duration / 60000;
+                    this.setState({template: template, _duration});
                     this.setForm(template);
                 }
             )
@@ -45,7 +47,7 @@ class TemplateEdit extends Component {
     };
 
     setForm = (template) => {
-        let {templateName, content, status, difficulty, categoryId, duration, passingScore} = template;
+        let {templateName, content, status, difficulty, categoryId, passingScore} = template;
         this.props.form.setFieldsValue({
             ...template,
             difficulty,
@@ -53,15 +55,14 @@ class TemplateEdit extends Component {
             content,
             status,
             categoryId,
-            duration,
             passingScore
         });
     };
 
     handleSubmit = () => {
-        let {template} = this.state;
-        let {content = [], totalScore, duration} = template;
-        let _duration = duration * 1000 * 60;
+        let {template, _duration} = this.state;
+        let {content = [], totalScore} = template;
+        let duration = _duration * 1000 * 60;
         if (U.str.isEmpty(status)) {
             template.status = "1"
         }
@@ -70,7 +71,7 @@ class TemplateEdit extends Component {
                 ...template,
                 content: content,
                 totalScore: totalScore,
-                duration: _duration
+                duration
             })
         }).then(() => {
             message.success("保存成功");
@@ -97,9 +98,28 @@ class TemplateEdit extends Component {
         })
     };
 
+    Submit = (questionId, collected) => {
+        let collect = {
+            questionId,
+        };
+        if (collected === 1) {
+            App.api('/usr/collect/save', {
+                collect: JSON.stringify(collect)
+            }).then(() => {
+                message.success("已收藏");
+            })
+        } else {
+            App.api('/usr/collect/delete', {
+                id: questionId
+            }).then(() => {
+                message.success("已取消");
+            })
+        }
+    };
+
     render() {
-        let {list = [], template = {}} = this.state;
-        let {templateName, categoryId, difficulty, status, content = [], totalScore = 0, duration, passingScore = 0} = template;
+        let {list = [], template = {}, _duration} = this.state;
+        let {templateName, categoryId, difficulty, status, content = [], totalScore = 0, passingScore = 0} = template;
         let checkTypes = [];
         content.map((detail) => {
             checkTypes.push(detail.type);
@@ -246,12 +266,9 @@ class TemplateEdit extends Component {
                     </div>
                 })}
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="考试时间">
-                    <InputNumber min={0} max={180} style={{width: '250px'}} value={duration} onChange={(e) => {
+                    <InputNumber min={0} max={180} style={{width: '250px'}} value={_duration} onChange={(e) => {
                         this.setState({
-                            template: {
-                                ...template,
-                                duration: e
-                            }
+                            _duration: e
                         })
                     }}/>
                     <span style={{marginLeft: "10px"}}>分钟</span>
