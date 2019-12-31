@@ -76,6 +76,7 @@ export default class Tag extends React.Component {
                         dataIndex: 'id',
                         className: 'txt-center',
                         render: (text, item, i) => i + 1
+                        // render: (col, row, i) => ((pagination.current - 1) * pagination.pageSize) + (i + 1)
                     }, {
                         title: '名称',
                         dataIndex: 'name',

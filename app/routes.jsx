@@ -18,6 +18,11 @@ import Paper from "./components/paper/Paper";
 import PaperEdit from "./components/paper/PaperEdit";
 import TemplatePreview from "./components/template/TemplatePreview";
 import PaperPreview from "./components/paper/PaperPreview";
+import Banners from "./components/banner/Banners";
+import Roles from "./components/admin/Roles";
+import RoleEdit from "./components/admin/RoleEdit";
+import Admins from "./components/admin/Admins";
+import AdminEdit from "./components/admin/AdminEdit";
 
 
 const routes = (
@@ -50,6 +55,15 @@ const routes = (
                                 <Route path='/app/user/users' component={Users}/>
                                 <Route path='/app/paper/paperPreview/:id' component={PaperPreview}/>
                                 <Route path='/app/category/category' component={Category}/>
+                                <Route path='/app/banner/banners' component={Banners}/>
+
+                                <Route path='/app/admin/admins' component={Admins}/>
+                                <Route path='/app/admin/admin-edit/:id' component={AdminEdit}/>
+
+                                <Route path='/app/admin/roles' component={Roles}/>
+                                <Route path='/app/admin/roleEdit/:id' component={RoleEdit}/>
+
+
                             </Index>
                         )}/>
 

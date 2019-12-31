@@ -33,7 +33,7 @@ class TemplateEdit extends Component {
     loadData = () => {
         let {id} = this.state;
         if (id > 0) {
-            App.api('/oms/template/getById', {id}).then((template) => {
+            App.api('/oms/template/template_id', {id}).then((template) => {
                     let {duration} = template;
                     let _duration = duration / 60000;
                     this.setState({template: template, _duration});
@@ -98,25 +98,6 @@ class TemplateEdit extends Component {
         })
     };
 
-    Submit = (questionId, collected) => {
-        let collect = {
-            questionId,
-        };
-        if (collected === 1) {
-            App.api('/usr/collect/save', {
-                collect: JSON.stringify(collect)
-            }).then(() => {
-                message.success("已收藏");
-            })
-        } else {
-            App.api('/usr/collect/delete', {
-                id: questionId
-            }).then(() => {
-                message.success("已取消");
-            })
-        }
-    };
-
     render() {
         let {list = [], template = {}, _duration} = this.state;
         let {templateName, categoryId, difficulty, status, content = [], totalScore = 0, passingScore = 0} = template;
@@ -174,11 +155,11 @@ class TemplateEdit extends Component {
                         {list.map((v, index1) => {
                             if (v.status === 1) {
                                 let {id, name, children = []} = v;
-                                return <TreeNode title={name} value={id} key={index1}>
+                                return <TreeNode title={name} value={id} key={index1} disabled>
                                     {children.map((va, index2) => {
                                         if (va.status === 1) {
                                             let {id, name, children = []} = va;
-                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`}>
+                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`} disabled>
                                                 {children.map((val, index3) => {
                                                     if (val.status === 1) {
                                                         let {id, name} = val;

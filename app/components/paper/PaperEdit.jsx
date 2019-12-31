@@ -29,12 +29,17 @@ class PaperEdit extends React.Component {
     }
 
     loadData = () => {
-        let {pagination} = this.state;
+        let {pagination, id} = this.state;
+        if (id > 0) {
+            App.api('/oms/paper/preview', {id}).then((paper) => {
+                this.setState({paper})
+            });
+        }
         App.api('/oms/template/template_list', {
             templateQo: JSON.stringify({
                 pageNumber: pagination.current,
                 pageSize: pagination.pageSize,
-                status:1
+                status: 1
             })
         }).then((template) => {
             let pagination = Utils.pager.convert2Pagination(template);
@@ -63,7 +68,7 @@ class PaperEdit extends React.Component {
     render() {
 
         let {paper, template = []} = this.state;
-        let {name, status} = paper;
+        let {name, status,templateId} = paper;
 
         return <div>
             <Card
@@ -87,31 +92,34 @@ class PaperEdit extends React.Component {
                     }}/>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="模板选择">
-                    <Select placeholder="全部模板" style={{width: 290}} onSelect={(value) => {
+                    <Select placeholder="全部模板" style={{width: 290}} value={templateId} onSelect={(value) => {
                         let _template = template.find((item) => item.id === value);
                         this.setState({
                             paper: {
                                 ...paper,
                                 templateId: value,
                                 passingScore: _template.passingScore,
-                                duration: _template.duration,
+                                duration: _template.duration / 60000,
                                 totalScore: _template.totalScore
                             }
                         })
                     }}>
                         {template.map((t, index) => {
-                                return <Option key={index} value={t.id}>{t.templateName}</Option>
+                            return <Option key={index} value={t.id}>{t.templateName}</Option>
                         })}
                     </Select>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="考试时长">
-                    <Input style={{width: '290px'}} value={paper.duration}/>
+                    <Input disabled={true} style={{width: '250px', marginRight: "10px"}}
+                           value={paper.duration}/><span>分钟</span>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="总分数">
-                    <Input style={{width: '290px'}} value={paper.totalScore}/>
+                    <Input disabled={true} style={{width: '250px', marginRight: "10px"}}
+                           value={paper.totalScore}/><span>分</span>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="及格分数">
-                    <Input style={{width: '290px'}} value={paper.passingScore}/>
+                    <Input disabled={true} style={{width: '250px', marginRight: "10px"}}
+                           value={paper.passingScore}/><span>分</span>
                 </Form.Item>
                 <Form.Item {...CTYPE.formItemLayout} required="true" label="状态">
                     <Switch checkedChildren="上架" unCheckedChildren="下架" checked={status === 1} onChange={(chk) => {

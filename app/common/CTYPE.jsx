@@ -66,7 +66,7 @@ let CTYPE = (() => {
             template: {key: '/app/template/template', path: '/app/template/template', txt: '试卷模板'},
             paper: {key: '/app/paper/paper', path: '/app/paper/paper', txt: '试卷生成'},
             user: {key: '/app/user/users', path: '/app/user/users', txt: '用户信息'},
-            ws_partners: {key: '/app/ws/partners', path: '/app/ws/partners', txt: '合作伙伴'},
+            pc: {key: '/app/banner/banners', path: '/app/banner/banners', txt: 'Banner'},
             ws_articles: {key: '/app/ws/articles', path: '/app/ws/articles', txt: '动态管理'},
             ws_qa_templates: {key: '/app/ws/qa-templates', path: '/app/ws/qa-templates', txt: '调查问卷模板'},
             ws_training_projects: {key: '/app/ws/training-projects', path: '/app/ws/training-projects', txt: '实战项目管理'},

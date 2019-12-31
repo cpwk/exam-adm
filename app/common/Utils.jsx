@@ -6,7 +6,7 @@ import {App, CTYPE, KvStorage} from "./index";
 import ImgLightbox from "./ImgLightbox";
 import ImgEditor from "./ImgEditor";
 
-import {Alert, LocaleProvider, Modal} from 'antd';
+import {Alert, ConfigProvider, Modal} from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import DialogExport from "./DialogExport";
 import XiumiEditor from "./XiumiEditor";
@@ -77,7 +77,7 @@ let Utils = (function () {
             }
 
             document.body.appendChild(div);
-            ReactDOM.render(<LocaleProvider locale={zhCN}>{child}</LocaleProvider>, div);
+            ReactDOM.render(<ConfigProvider locale={zhCN}>{child}</ConfigProvider>, div);
         };
 
         let closeModalContainer = (id_div) => {
@@ -210,19 +210,15 @@ let Utils = (function () {
                 ROLE_EDIT: authPermission('ROLE_EDIT'),
                 ADMIN_EDIT: authPermission('ADMIN_EDIT'),
                 ADMIN_LIST: authPermission('ADMIN_LIST'),
+                USER_EDIT: authPermission('USER_EDIT'),
 
-                TERM_EDIT: authPermission('TERM_EDIT'),
-                TRAINER_EDIT: authPermission('TRAINER_EDIT'),
-                TRAINEE_EDIT: authPermission('TRAINEE_EDIT'),
+                QUESTION_EDIT: authPermission('QUESTION_EDIT'),
+                CATEGORY_EDIT: authPermission('CATEGORY_EDIT'),
+                TAG_EDIT: authPermission('TAG_EDIT'),
+                PAPER_EDIT: authPermission('PAPER_EDIT'),
+                TEMPLATE_EDIT: authPermission('TEMPLATE_EDIT'),
 
                 BANNER_EDIT: authPermission('BANNER_EDIT'),
-                PARTNER_EDIT: authPermission('PARTNER_EDIT'),
-                ARTICLE_EDIT: authPermission('ARTICLE_EDIT'),
-                TRAINING_PROJECT_EDIT: authPermission('TRAINING_PROJECT_EDIT'),
-                QA_EDIT: authPermission('QA_EDIT'),
-                JOB_EDIT: authPermission('JOB_EDIT'),
-                FAQ_EDIT: authPermission('FAQ_EDIT')
-
 
             }
         };

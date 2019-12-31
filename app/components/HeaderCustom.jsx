@@ -3,6 +3,9 @@ import {Avatar, Form, Icon, Layout, Menu, Modal} from 'antd';
 
 import App from '../common/App.jsx';
 
+import AdminUtils from "./admin/AdminUtils";
+import AdminProfile from "./admin/AdminProfile";
+
 const {Header} = Layout;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -18,9 +21,9 @@ class HeaderCustom extends React.Component {
     }
 
     componentDidMount() {
-        // AdminProfile.get().then((profile) => {
-        //     this.setState({profile});
-        // });
+        AdminProfile.get().then((profile) => {
+            this.setState({profile});
+        });
     }
 
 
@@ -61,10 +64,10 @@ class HeaderCustom extends React.Component {
                       mode="horizontal" style={{lineHeight: '64px', float: 'right'}}>
                     <SubMenu
                         title={<Avatar size={40} icon="user"/>}>
-                        <MenuItemGroup title="用户中心">
-                            {/*<Menu.Item key="pwd"><span onClick={AdminUtils.modAdminPwd}>修改密码</span></Menu.Item>*/}
-                            <Menu.Item key="logout"><span onClick={this.logout}>退出登录</span></Menu.Item>
-                        </MenuItemGroup>
+                        <Menu.ItemGroup title="用户中心">
+                            <Menu.Item key="pwd"><a target="_blank" onClick={AdminUtils.modAdminPwd}>修改密码</a></Menu.Item>
+                            <Menu.Item key="logout"><a target="_blank" onClick={this.logout}>退出登录</a></Menu.Item>
+                        </Menu.ItemGroup>
                     </SubMenu>
                 </Menu>
 

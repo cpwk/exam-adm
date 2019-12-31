@@ -204,11 +204,11 @@ class QuestionEdit extends React.Component {
                         {list.map((v, index1) => {
                             if (v.status === 1) {
                                 let {id, name, children = []} = v;
-                                return <TreeNode title={name} value={id} key={index1}>
+                                return <TreeNode title={name} value={id} key={index1} disabled>
                                     {children.map((va, index2) => {
                                         if (va.status === 1) {
                                             let {id, name, children = []} = va;
-                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`}>
+                                            return <TreeNode title={name} value={id} key={`${index1}-${index2}`} disabled>
                                                 {children.map((val, index3) => {
                                                     if (val.status === 1) {
                                                         let {id, name} = val;

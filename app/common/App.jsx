@@ -1,9 +1,8 @@
 import {message} from 'antd';
 import KvStorage from './KvStorage.jsx';
 import {U, Utils} from "./index";
-import createHashHistory from 'history/createHashHistory';
 
-const hashHistory = createHashHistory();
+const hashHistory = require("history").createHashHistory();
 
 let ENV_CONFIG;
 if (process.env.API_ENV == 'dev') {

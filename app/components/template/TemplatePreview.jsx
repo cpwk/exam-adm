@@ -28,9 +28,9 @@ class TemplatePreview extends Component {
     loadData = () => {
         let {id} = this.state;
         if (id > 0) {
-            App.api('/oms/template/template_id', {id}).then((template) => {
+            App.api('/oms/template/template_preview', {id}).then((template) => {
                     this.setState({template: template});
-                    this.setForm(template);
+                    // this.setForm(template);
                 }
             );
         }
@@ -70,7 +70,7 @@ class TemplatePreview extends Component {
                     </div>
                     <div className="paper-standard">
                         <ul>
-                            <li><span>考试时间:</span>{duration}<span>/分钟</span></li>
+                            <li><span>考试时间:</span>{duration/60000}<span>/分钟</span></li>
                             <li><span>总分:</span>{totalScore}<span>/分</span></li>
                             <li><span>及格分:</span>{passingScore}<span>/分</span></li>
                         </ul>

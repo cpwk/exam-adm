@@ -17,7 +17,7 @@ class Users extends Component {
             },
             users: [],
             loading: false,
-            status:0
+            status: 0
         }
     }
 
@@ -56,6 +56,10 @@ class Users extends Component {
         this.setState({
             pagination: pagination
         }, () => this.loadData());
+    };
+
+    details = (item, index) => {
+
     };
 
     status = (item, index) => {
@@ -111,7 +115,8 @@ class Users extends Component {
                         title: "序号",
                         dataIndex: "id",
                         className: "txt-center",
-                        render: (text, item, i) => i + 1
+                        // render: (text, item, i) => i + 1
+                        render: (col, row, i) => ((pagination.current - 1) * pagination.pageSize) + (i + 1)
                     }, {
                         title: "头像",
                         dataIndex: "avatar",
@@ -145,7 +150,7 @@ class Users extends Component {
                             return <Dropdown overlay={
                                 <Menu>
                                     <Menu.Item key="1">
-                                        <a onClick={() => this.edit(item)}>查看详情</a>
+                                        <a onClick={() => this.details(item)}>查看详情</a>
                                     </Menu.Item>
                                     <Menu.Item key="2">
                                         <a onClick={() => this.status(item, index)}>

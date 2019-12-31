@@ -62,15 +62,9 @@ class Login extends React.Component {
                         }
                     ).then((result) => {
 
-                        // Utils.adm.savePermissions(result.admin.role.permissions);
-
-                        // KvStorage.set('admin-profile', JSON.stringify(result.admin));
-                        // KvStorage.set('admin-token', result.session.token);
-
-
-                        App.afterSignin("admin-token", result.adminSession.token);
-                        App.afterSignin("admin", JSON.stringify(result.admin));
-
+                        Utils.adm.savePermissions(result.admin.role.permissions);
+                        KvStorage.set('admin-profile', JSON.stringify(result.admin));
+                        KvStorage.set('admin-token', result.adminSession.token);
                         App.go('/index');
 
                     })
@@ -100,7 +94,7 @@ class Login extends React.Component {
                             {getFieldDecorator('password', {
                                 rules: [{required: true, message: '请输入密码!'}],
                             })(
-                                <Input prefix={<Icon type="lock" style={{fontSize: 13}}/>} type="password"
+                                <Input onPressEnter={this.onSubmit} prefix={<Icon type="lock" style={{fontSize: 13}}/>} type="password"
                                        placeholder="密码"/>
                             )}
                         </FormItem>
