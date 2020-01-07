@@ -52,7 +52,7 @@ export default class Question extends React.Component {
     };
 
     loadProps = () => {
-        App.api('/oms/category/categorys').then((list) => {
+        App.api('/oms/category/categorys',{oms:false}).then((list) => {
             this.setState({list});
         });
     };

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {App, CTYPE, Utils} from "../../common";
-import {Dropdown, Icon, Menu, Table, Modal, message, Row, Col, Select, Card} from "antd";
+import {Dropdown, Icon, Menu, Table, Modal, message, Row, Col, Select, Card, Avatar} from "antd";
 import BreadcrumbCustom from "../BreadcrumbCustom";
+import TagUtils from "../tag/TagUtils";
+import UserUtils from "./UsersUtils";
 
 const {Option} = Select;
 
@@ -58,8 +60,8 @@ class Users extends Component {
         }, () => this.loadData());
     };
 
-    details = (item, index) => {
-
+    details = (id) => {
+        UserUtils.edit(id, this.loadData);
     };
 
     status = (item, index) => {
@@ -80,7 +82,6 @@ class Users extends Component {
 
     render() {
         let {users = [], pagination, loading} = this.state;
-
         return <div>
 
             <BreadcrumbCustom first={CTYPE.link.user.txt}/>
@@ -122,7 +123,9 @@ class Users extends Component {
                         dataIndex: "avatar",
                         className: "txt-center",
                         render: (avatar, item, index) => {
-                            return <img key={avatar} className='article-img' src={avatar + '@!40-40'}/>
+                            return avatar === undefined ?
+                                <Icon type="user"/>
+                                : <img key={avatar} className='article-img' src={avatar + '@!40-40'}/>
                         }
                     }, {
                         title: "用户名",
@@ -150,7 +153,7 @@ class Users extends Component {
                             return <Dropdown overlay={
                                 <Menu>
                                     <Menu.Item key="1">
-                                        <a onClick={() => this.details(item)}>查看详情</a>
+                                        <a onClick={() => this.details(item.id)}>查看详情</a>
                                     </Menu.Item>
                                     <Menu.Item key="2">
                                         <a onClick={() => this.status(item, index)}>

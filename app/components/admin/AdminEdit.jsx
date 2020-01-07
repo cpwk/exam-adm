@@ -57,6 +57,7 @@ class AdminEditForm extends React.Component {
             return;
         }
         App.api('oms/admin/save_admin', {'admin': JSON.stringify(admin)}).then((res) => {
+            message.success("操作成功")
             window.history.back();
         });
     };

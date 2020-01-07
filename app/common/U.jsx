@@ -560,6 +560,18 @@ var U = (function () {
 
     })();
 
+    let setWXTitle = (t) => {
+        let i = document.createElement('iframe');
+        i.style.display = 'none';
+        i.onload = () => {
+            setTimeout(() => {
+                i.remove();
+            }, 9);
+        };
+        document.body.appendChild(i);
+        document.title = t + '迈道教育';
+    };
+
     let base64 = (() => {
         let getBlobBydataURI = (dataURI, type) => {
             let binary = atob(dataURI.split(',')[1]);
@@ -600,7 +612,8 @@ var U = (function () {
         countryCode: countryCode,
         convertBigDecimal: convertBigDecimal,
         isIOS: isIOS,
-        formatCurrency, base64
+        formatCurrency, base64,
+        setWXTitle
     };
 })();
 

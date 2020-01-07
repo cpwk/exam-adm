@@ -108,8 +108,8 @@ export default class BannerEdit extends React.Component {
             }
 
         } else {
-            style = {width: '187px', height: '105px'};
-            scale = '750*420';
+            style = {width: '105px', height: '160px'};
+            scale = '750*530';
         }
 
         return <Modal title={'编辑Banner'}

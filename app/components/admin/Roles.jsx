@@ -19,7 +19,6 @@ export default class Roles extends React.Component {
         this.loadData();
     }
 
-
     loadData = () => {
         this.setState({loading: true});
         let p = this.state.pagination;

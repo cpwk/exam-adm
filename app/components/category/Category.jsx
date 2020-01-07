@@ -22,7 +22,7 @@ export default class Category extends React.Component {
 
     loadData = () => {
         this.setState({loading: true});
-        App.api('/oms/category/categorys')
+        App.api('/oms/category/categorys',{oms:true})
             .then((list) => {
                 this.setState({
                     list,

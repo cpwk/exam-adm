@@ -53,7 +53,7 @@ class QuestionEdit extends React.Component {
         App.api("/oms/tag/tag", {id}).then((tag) => {
             this.setState({tag})
         });
-        App.api('/oms/category/categorys').then((list) => {
+        App.api('/oms/category/categorys',{oms:false}).then((list) => {
             this.setState({
                 list,
             });

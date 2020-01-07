@@ -20,28 +20,28 @@ export default class Index extends Component {
     }
 
     componentDidMount() {
-        // if (window.location.hash.indexOf('login') < 0) {
-        //     let adm = App.getAdmProfile();
-        //     if (!adm.id) {
-        //         App.logout();
-        //         App.go('/');
-        //     } else {
-        //         this.loadPermissions(0);
-        //     }
-        // }
-        if (window.location.hash.indexOf('signIn') < 0) {
+        if (window.location.hash.indexOf('login') < 0) {
             let adm = App.getAdmProfile();
             if (!adm.id) {
                 App.logout();
                 App.go('/');
             } else {
-                App.api('oms/role/role',{id:adm.roleId}).then((role)=>{
-                    Utils.adm.savePermissions(role.permissions);
-                });
                 this.loadPermissions(0);
-                message.destroy();
             }
         }
+        // if (window.location.hash.indexOf('signIn') < 0) {
+        //     let adm = App.getAdmProfile();
+        //     if (!adm.id) {
+        //         App.logout();
+        //         App.go('/');
+        //     } else {
+        //         App.api('oms/role/role',{id:adm.roleId}).then((role)=>{
+        //             Utils.adm.savePermissions(role.permissions);
+        //         });
+        //         this.loadPermissions(0);
+        //         message.destroy();
+        //     }
+        // }
     }
 
     loadPermissions = (count) => {

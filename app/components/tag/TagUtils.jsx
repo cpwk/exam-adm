@@ -1,8 +1,8 @@
 import React from 'react';
-import TagEdit from "./tagEdit";
+import TagEdit from "./TagEdit";
 import {Utils} from "../../common";
 
-let CategoryUtils = (() => {
+let TagUtils = (() => {
 
     let edit = (tag, loadData) => {
         Utils.common.renderReactDOM(<TagEdit tag={tag} loadData={loadData}/>);
@@ -14,4 +14,4 @@ let CategoryUtils = (() => {
 
 })();
 
-export default CategoryUtils;
+export default TagUtils;

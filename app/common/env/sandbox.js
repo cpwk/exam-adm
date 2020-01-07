@@ -1,4 +1,4 @@
 const env = {
-    // api: '//47.101.55.91:9089/'
+    api: '//112.125.89.22:8989/'
 };
 export default env;

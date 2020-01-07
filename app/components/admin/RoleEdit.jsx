@@ -3,9 +3,7 @@ import {Link} from 'react-router-dom';
 import {Button, Card, Form, Input, message, Tag, Transfer} from 'antd';
 import BreadcrumbCustom from '../BreadcrumbCustom';
 import App from '../../common/App.jsx';
-import {CTYPE, U, Utils} from "../../common";
-import KvStorage from "../../common/KvStorage";
-import AdminProfile from "./AdminProfile";
+import {CTYPE, U} from "../../common";
 
 const FormItem = Form.Item;
 
@@ -63,11 +61,10 @@ export default class RoleEdit extends React.Component {
 
         role.permissions = checkedKeys;
         App.api('oms/role/save_role', {role: JSON.stringify(role)}).then((result) => {
+            message.success("操作成功");
             window.history.back();
         });
     };
-
-
 
     render() {
 
