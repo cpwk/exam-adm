@@ -16,7 +16,7 @@ class Profiles extends Component {
     }
 
     loadData = () => {
-
+        App.api("/oms/user/omsProfile")
     };
 
     render() {
