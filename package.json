@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "antd": "^3.13.6",
+    "css-animation": "1.5.0",
+    "rc-animate": "2.8.2",
     "awesome-urlsafe-base64": "^1.1.2",
     "babel-polyfill": "^6.23.0",
     "crypto-js": "^3.1.9-1",
@@ -81,6 +83,10 @@
     "webpack-cli": "^3.1.2",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-dev-server": "^3.1.10"
+  },
+  "resolutions": {
+    "css-animation": "1.5.0",
+    "rc-animate": "2.8.2"
   },
   "keywords": [
     "shir-oms"
